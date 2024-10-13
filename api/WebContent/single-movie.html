@@ -11,9 +11,39 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <title>Single Movie</title>
+    <style>
+        body {
+            background-color: skyblue; /* body background color */
+        }
+        h1 {
+            text-align: center;
+            text-shadow: 2px 2px 5px #0372df;
+        }
+        /* Style the button */
+        button {
+            background-color: #4CAF50; /* Green background */
+            border: none; /* Remove borders */
+            color: white; /* White text */
+            padding: 15px 32px; /* Add some padding */
+            text-align: center; /* Center the text */
+            text-decoration: none; /* Remove underline */
+            display: inline-block; /* Make the button inline-block */
+            font-size: 16px; /* Increase font size */
+            cursor: pointer; /* Add a pointer cursor on hover */
+            border-radius: 12px; /* Rounded corners */
+            position: fixed; /* Fixed position to make it stay in the same spot */
+            top: 10px; /* Position from the top */
+            right: 10px; /* Position from the right */
+        }
+
+        /* Add a hover effect for the button */
+        button:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+    </style>
 </head>
 <body>
-<h1>Single Movie Page</h1>
+<h1>Movie Information</h1>
 
 <!-- H3 body is left empty here, will be populated with the data retrieved with single-movie.js -->
 <!-- single-movie.js will find this html element by it's id "movie_info" -->
