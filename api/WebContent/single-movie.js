@@ -35,21 +35,36 @@ function handleResult(resultData) {
     // append two html <p> created to the h3 body, which will refresh the page
     starInfoElement.append("<p>Movie Title: " + resultData[0]["movie_title"] + "</p>" +
         "<p>Release Years: " + resultData[0]["movie_year"] + "<p>Director: " +
-        resultData[0]["movie_director"] +"</p>");
+        resultData[0]["movie_director"] +"</p>"+
+        "<p>Movie geners: " + resultData[0]["movie_genres"] +"</p>");
 
     console.log("handleResult: populating movie table from resultData");
 
-    // Find the empty table body by id "movie_genres_and_stars_table"
-    let movieTableBodyElement = jQuery("#movie_genres_and_stars_table");
+    // Find the empty table body by id "movie_genres_and_stars_table_body"
+    let movieTableBodyElement = jQuery("#movie_genres_and_stars_table_body");
 
     // Concatenate the html tags with resultData jsonObject to create table rows
     let i = 0;
-    while (i < Math.min(10, resultData.length)) {
+    while (i < resultData.length) {
         let rowHTML = "";
         rowHTML += "<tr>";
         rowHTML += "<th>" + resultData[i]["movie_genres"] + "</th>";
-        rowHTML += "<th>" + resultData[i]["movie_stars"] + "</th>";
-        //TODO: connect to each movie star with hyperlink
+
+        // Create links for each star
+        let starNames = resultData[i]["movie_stars"].split(", ");  //stars are comma-separated
+        let starIds = resultData[i]["movie_star_ids"].split(", "); //star_ids are comma-separated
+
+        let starHTML = "";
+        for (let k = 0; k < starNames.length; k++) {
+            starHTML += '<a href="single-star.html?id=' + starIds[k] + '">' + starNames[k] + '</a>';
+            // Add comma between stars
+            if (k < starNames.length - 1) {
+                starHTML += ", ";
+            }
+        }
+        rowHTML += "<th>" + starHTML + "</th>"; // Add stars column with links
+
+        rowHTML += "</tr>";
 
         // Append the row created to the table body, which will refresh the page
         movieTableBodyElement.append(rowHTML);

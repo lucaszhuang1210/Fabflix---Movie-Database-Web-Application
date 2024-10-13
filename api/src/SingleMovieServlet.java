@@ -56,6 +56,7 @@ public class SingleMovieServlet extends HttpServlet {
             String query = "SELECT m.id as movieId, m.title, m.year, m.director, " +
                     "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name SEPARATOR ', ') as genres, " +
                     "GROUP_CONCAT(DISTINCT s.name ORDER BY s.name SEPARATOR ', ') as stars, " +
+                    "GROUP_CONCAT(DISTINCT s.id ORDER BY s.id SEPARATOR ', ') as star_ids, " +
                     "r.rating " +
                     "FROM movies m " +
                     "JOIN genres_in_movies gim ON m.id = gim.movieId " +
@@ -64,7 +65,7 @@ public class SingleMovieServlet extends HttpServlet {
                     "JOIN stars s ON sim.starId = s.id " +
                     "LEFT JOIN ratings r ON m.id = r.movieId " +
                     "WHERE m.id = ? " +
-                    "GROUP BY m.id, r.rating";
+                    "GROUP BY m.id, m.title, m.year, m.director, r.rating";
 
             // Declare our statement
             PreparedStatement statement = conn.prepareStatement(query);
@@ -87,6 +88,7 @@ public class SingleMovieServlet extends HttpServlet {
                 String movieDirector = rs.getString("director");
                 String genres = rs.getString("genres");  // All genres, concatenated
                 String stars = rs.getString("stars");    // All stars, concatenated
+                String star_ids = rs.getString("star_ids");// All stars id, concatenated
                 String rating = rs.getString("rating");
 
                 // Create a JsonObject based on the data we retrieve from rs
@@ -97,6 +99,7 @@ public class SingleMovieServlet extends HttpServlet {
                 jsonObject.addProperty("movie_director", movieDirector);
                 jsonObject.addProperty("movie_genres", genres);     // All genres as a comma-separated string
                 jsonObject.addProperty("movie_stars", stars);       // All stars as a comma-separated string
+                jsonObject.addProperty("movie_star_ids", star_ids); // All stars_id as a comma-separated string
                 jsonObject.addProperty("movie_rating", rating);
 
                 jsonArray.add(jsonObject);

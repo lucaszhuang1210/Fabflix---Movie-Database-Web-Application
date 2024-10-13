@@ -16,7 +16,7 @@
 <h1>Single Movie Page</h1>
 
 <!-- H3 body is left empty here, will be populated with the data retrieved with single-movie.js -->
-<!-- single-movie.js will find this html element by it's id "star_info" -->
+<!-- single-movie.js will find this html element by it's id "movie_info" -->
 <h3 id="movie_info"></h3>
 <table id=movie_genres_and_stars_table class="table table-striped">
     <thead>
@@ -27,10 +27,15 @@
     </tr>
     </thead>
 
-    <!-- Table body is left empty here, will be populated with the data retrieved with single-star.js -->
-    <!-- single-star.js will find this html element by it's id "movie_table_body" -->
-    <tbody id=movie_table_body></tbody>
+    <!-- Table body is left empty here, will be populated with the data retrieved with single-movie.js -->
+    <!-- single-movie.js will find this html element by it's id "movie_genres_and_stars_table_bod" -->
+    <tbody id=movie_genres_and_stars_table_body></tbody>
 </table>-
+
+<!-- botton allow jump to index.html -->
+<a href="index.html">
+    <button type="button">Go to Main Page</button>
+</a>
 
 <!-- Load jQuery and Bootstrap JS -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
