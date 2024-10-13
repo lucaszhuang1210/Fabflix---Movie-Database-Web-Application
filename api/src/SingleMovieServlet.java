@@ -15,9 +15,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-// Declaring a WebServlet called SingleStarServlet, which maps to url "/api/single-star"
-@WebServlet(name = "SingleStarServlet", urlPatterns = "/api/single-star")
-public class SingleStarServlet extends HttpServlet {
+// Declaring a WebServlet called SingleStarServlet, which maps to url "/api/single-movie"
+@WebServlet(name = "SingleMovieServlet", urlPatterns = "/api/single-movie")
+public class SingleMovieServlet extends HttpServlet {
     private static final long serialVersionUID = 2L;
 
     // Create a dataSource which registered in web.xml
@@ -51,14 +51,20 @@ public class SingleStarServlet extends HttpServlet {
         // Get a connection from dataSource and let resource manager close the connection after usage.
         try (Connection conn = dataSource.getConnection()) {
             // Get a connection from dataSource
-
+            // TODO: GROUP_CONCAT(star_id) inorder to connect to have a hyperlinked for each stars
             // Construct a query with parameter represented by "?"
-            String query = "SELECT s.id as starId, s.name, IFNULL(s.birthYear, 'N/A') as birthYear, " +
-                    "m.id as movieId, m.title, m.year, m.director " +
-                    "FROM stars s " +
-                    "JOIN stars_in_movies sim ON s.id = sim.starId " +
-                    "JOIN movies m ON m.id = sim.movieId " +
-                    "WHERE s.id = ?";
+            String query = "SELECT m.id as movieId, m.title, m.year, m.director, " +
+                    "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name SEPARATOR ', ') as genres, " +
+                    "GROUP_CONCAT(DISTINCT s.name ORDER BY s.name SEPARATOR ', ') as stars, " +
+                    "r.rating " +
+                    "FROM movies m " +
+                    "JOIN genres_in_movies gim ON m.id = gim.movieId " +
+                    "JOIN genres g ON gim.genreId = g.id " +
+                    "JOIN stars_in_movies sim ON m.id = sim.movieId " +
+                    "JOIN stars s ON sim.starId = s.id " +
+                    "LEFT JOIN ratings r ON m.id = r.movieId " +
+                    "WHERE m.id = ? " +
+                    "GROUP BY m.id, r.rating";
 
             // Declare our statement
             PreparedStatement statement = conn.prepareStatement(query);
@@ -74,26 +80,24 @@ public class SingleStarServlet extends HttpServlet {
 
             // Iterate through each row of rs
             while (rs.next()) {
-
-                String starId = rs.getString("starId");
-                String starName = rs.getString("name");
-                String starDob = rs.getString("birthYear");
-
+                //TODO: add movie_stars_id
                 String movieId = rs.getString("movieId");
                 String movieTitle = rs.getString("title");
                 String movieYear = rs.getString("year");
                 String movieDirector = rs.getString("director");
+                String genres = rs.getString("genres");  // All genres, concatenated
+                String stars = rs.getString("stars");    // All stars, concatenated
+                String rating = rs.getString("rating");
 
                 // Create a JsonObject based on the data we retrieve from rs
-
                 JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("star_id", starId);
-                jsonObject.addProperty("star_name", starName);
-                jsonObject.addProperty("star_dob", starDob);
                 jsonObject.addProperty("movie_id", movieId);
                 jsonObject.addProperty("movie_title", movieTitle);
                 jsonObject.addProperty("movie_year", movieYear);
                 jsonObject.addProperty("movie_director", movieDirector);
+                jsonObject.addProperty("movie_genres", genres);     // All genres as a comma-separated string
+                jsonObject.addProperty("movie_stars", stars);       // All stars as a comma-separated string
+                jsonObject.addProperty("movie_rating", rating);
 
                 jsonArray.add(jsonObject);
             }
@@ -124,3 +128,4 @@ public class SingleStarServlet extends HttpServlet {
     }
 
 }
+
