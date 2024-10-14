@@ -1,9 +1,13 @@
 Team MicroHard
+
 members: 
+
 Lucas(Kaixiang) Zhuang, Student ID: 73969468
+
 Betty(Jiatong) Liu, Student ID: 51549174
 
 Video Explaination
+
 Youtube video URL: xxx
 
 Brief Explanation
