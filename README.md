@@ -7,7 +7,7 @@
 ---
 
 ## Video Explanation
-[Watch the video on YouTube](coming soon)  
+[Watch the video on YouTube](https://www.youtube.com/watch?v=9H6ypb_tpBI)  
 
 ---
 
