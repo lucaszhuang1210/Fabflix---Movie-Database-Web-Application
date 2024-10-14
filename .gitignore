@@ -17,6 +17,7 @@ local.properties
 *.iml
 .idea/
 target/
+.DS_Store
 
 # External tool builders
 .externalToolBuilders/
