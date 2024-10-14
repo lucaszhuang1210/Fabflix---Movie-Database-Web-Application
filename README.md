@@ -1,3 +1,11 @@
+Team MicroHard
+members: 
+Lucas(Kaixiang) Zhuang, Student ID: 73969468
+Betty(Jiatong) Liu, Student ID: 51549174
+
+Video Explaination
+Youtube video URL: xxx
+
 Brief Explanation
 
 MovieListServlet.java is a Java servlet that talks to the database and get the movie. It returns a list of movie in the JSON format. The name of star is generated as a link to Single Star page.  The name of movie is generated as a link to Single movie page.
