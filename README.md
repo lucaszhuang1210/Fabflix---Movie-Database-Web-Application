@@ -12,18 +12,8 @@ We collaborated on setting up the environment (Tasks 1-5) and worked together on
 
 ## Specific Contributions:
 
-### Lucas
-- Debugged and updated the Single Movie page details
-- Wrote the `README.md` file
-- Created the `moviedb` database
-- Set up and operate AWS instances
-- Recorded video demonstrations
-
-### Betty
-- Developed the Single Star and Single Movie features
-- Created the `style.css` file
-- Fixed Maven package setup
-- Assisted with AWS instance setup
+- **Lucas:** Debugged and updated the Single Movie page, wrote the `README.md`, created the `moviedb` database, set up AWS, and recorded video demonstrations.
+- **Betty:** Developed Single Star and Single Movie features, created the `style.css`, fixed Maven packages setup, and assisted with AWS instance setup.
 
 ---
 
