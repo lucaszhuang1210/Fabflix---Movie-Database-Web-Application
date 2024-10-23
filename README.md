@@ -6,6 +6,27 @@
 
 ---
 
+# Team Contributions
+
+We collaborated on setting up the environment (Tasks 1-5) and worked together on the Movie List Page (`MovieListServlet`, `index.html`, and `index.js`).
+
+## Specific Contributions:
+
+### Lucas
+- Debugged and updated the Single Movie page details
+- Wrote the `README.md` file
+- Created the `moviedb` database
+- Set up and operate AWS instances
+- Recorded video demonstrations
+
+### Betty
+- Developed the Single Star and Single Movie features
+- Created the `style.css` file
+- Fixed Maven package setup
+- Assisted with AWS instance setup
+
+---
+
 ## Video Explanation
 [Watch the video on YouTube](https://www.youtube.com/watch?v=9H6ypb_tpBI)  
 
