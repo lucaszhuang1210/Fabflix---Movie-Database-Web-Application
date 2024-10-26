@@ -19,9 +19,55 @@
             text-align: center;
             text-shadow: 2px 2px 5px #67dbdb;
         }
+        /* Add some styling to the form */
+        #search_form {
+            margin: 20px auto;
+            width: 60%;
+        }
+        #search_form div {
+            margin-bottom: 10px;
+        }
     </style>
 </head>
+
 <body>
+<h1>Movie Search</h1>
+<!-- Search Form -->
+<!-- Search Form -->
+<form id="search_form" action="movie-list.html" method="GET">
+    <div class="form-group">
+        <div class="form-row align-items-center">
+            <label for="title" class="col-sm-2 col-form-label">Title:</label>
+            <div class="col-sm-10">
+                <input type="text" id="title" name="title" class="form-control">
+            </div>
+        </div>
+        <div class="form-row align-items-center">
+            <label for="year" class="col-sm-2 col-form-label">Year:</label>
+            <div class="col-sm-10">
+                <input type="number" id="year" name="year" min="1900" class="form-control">
+            </div>
+        </div>
+        <div class="form-row align-items-center">
+            <label for="director" class="col-sm-2 col-form-label">Director:</label>
+            <div class="col-sm-10">
+                <input type="text" id="director" name="director" class="form-control">
+            </div>
+        </div>
+        <div class="form-row align-items-center">
+            <label for="star" class="col-sm-2 col-form-label">Star's Name:</label>
+            <div class="col-sm-10">
+                <input type="text" id="star" name="star" class="form-control">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-10">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </div>
+</form>
 
 <h1>Top 20 Rated Movies</h1>
 <!-- Id "movie_list_table" is useful for jQuery to find the html element with id, class here is mapping to Bootstrap defined class CSS -->
