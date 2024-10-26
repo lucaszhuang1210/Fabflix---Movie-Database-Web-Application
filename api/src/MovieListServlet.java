@@ -48,22 +48,6 @@ public class MovieListServlet extends HttpServlet {
             // Declare our statement
             Statement statement = conn.createStatement();
 
-//should all genres and stars
-//            String query = "SELECT \n" +
-//                    "    m.id, \n" +
-//                    "    m.title, \n" +
-//                    "    m.year, \n" +
-//                    "    m.director, \n" +
-//                    "    (SELECT GROUP_CONCAT(g.name ORDER BY g.name SEPARATOR ', ') FROM genres g \n" +  // Change LIMIT to SEPARATOR for correct syntax
-//                    "     JOIN genres_in_movies gm ON g.id = gm.genreId WHERE gm.movieId = m.id) AS genres,\n" +
-//                    "    (SELECT GROUP_CONCAT(s.name ORDER BY s.name SEPARATOR ', ') FROM stars s \n" +  // Change LIMIT to SEPARATOR for correct syntax
-//                    "     JOIN stars_in_movies sm ON s.id = sm.starId WHERE sm.movieId = m.id) AS stars,\n" +
-//                    "    r.rating\n" +
-//                    "FROM movies m\n" +
-//                    "JOIN ratings r ON m.id = r.movieId\n" +
-//                    "ORDER BY r.rating DESC\n" +
-//                    "LIMIT 20;\n";
-
             String query = "SELECT \n" +
                     "    m.id, \n" +
                     "    m.title, \n" +
