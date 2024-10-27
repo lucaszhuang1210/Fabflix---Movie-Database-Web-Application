@@ -14,7 +14,7 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-
+import java.sql.PreparedStatement;
 
 // Declaring a WebServlet called StarsServlet, which maps to url "/api/movie-list?id="
 @WebServlet(name = "MovieListServlet", urlPatterns = "/api/movie-list")
@@ -36,19 +36,27 @@ public class MovieListServlet extends HttpServlet {
      * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
         response.setContentType("application/json"); // Response mime type
 
-        // Output stream to STDOUT
-        PrintWriter out = response.getWriter();
+        PrintWriter out = response.getWriter(); // Output stream to STDOUT
 
-        // Get a connection from dataSource and let resource manager close the connection after usage.
-        try (Connection conn = dataSource.getConnection()) {
+        // Parse page and size parameters
+        int page = 1;
+        int size = 10;
+        try {
+            page = Integer.parseInt(request.getParameter("page"));
+            size = Integer.parseInt(request.getParameter("size"));
+        } catch (NumberFormatException e) {
+            // Write error message JSON object to output
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("errorMessage", e.getMessage());
+            out.write(jsonObject.toString());
+            // Set response status to 500 (Internal Server Error)
+            response.setStatus(500);
+        }
+        int offset = (page - 1) * size;
 
-            // Declare our statement
-            Statement statement = conn.createStatement();
-
-            String query = "SELECT \n" +
+        String query = "SELECT \n" +
                     "    m.id, \n" +
                     "    m.title, \n" +
                     "    m.year, \n" +
@@ -77,14 +85,20 @@ public class MovieListServlet extends HttpServlet {
                     "FROM movies m \n" +
                     "JOIN ratings r ON m.id = r.movieId \n" +
                     "ORDER BY r.rating DESC \n" +
-                    "LIMIT 20;";
+                    "LIMIT ? OFFSET ?;";
 
-            // Perform the query
-            ResultSet rs = statement.executeQuery(query);
+        // Get a connection from dataSource and let resource manager close the connection after usage.
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement statement = conn.prepareStatement(query)) {
+
+            // Set parameters for pagination
+            statement.setInt(1, size);
+            statement.setInt(2, offset);
+
+            ResultSet rs = statement.executeQuery();
 
             JsonArray jsonArray = new JsonArray();
 
-            // Iterate through each row of rs
             while (rs.next()) {
                 String movie_id = rs.getString("id");
                 String movie_title = rs.getString("title");
@@ -109,19 +123,11 @@ public class MovieListServlet extends HttpServlet {
 
                 jsonArray.add(jsonObject);
             }
-            rs.close();
-            statement.close();
 
-            // Log to localhost log
-            request.getServletContext().log("getting " + jsonArray.size() + " results");
-
-            // Write JSON string to output
             out.write(jsonArray.toString());
-            // Set response status to 200 (OK)
-            response.setStatus(200);
+            response.setStatus(HttpServletResponse.SC_OK);
 
         } catch (Exception e) {
-
             // Write error message JSON object to output
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("errorMessage", e.getMessage());
@@ -132,8 +138,6 @@ public class MovieListServlet extends HttpServlet {
         } finally {
             out.close();
         }
-
         // Always remember to close db connection after usage. Here it's done by try-with-resources
-
     }
 }

@@ -10,18 +10,25 @@
 
 
 /**
+ * Global variables to manage pagination state
+ */
+let currentPage = 1;
+let recordsPerPage = 10; // Default records per page
+
+/**
  * Handles the data returned by the API, read the jsonObject and populate data into html elements
  * @param resultData jsonObject
  */
+
 function handleMovieListResult(resultData) {
     console.log("handleStarResult: populating star table from resultData");
 
     // Find the empty table body by id "movie_list_table_body"
     let movieTableBodyElement = jQuery("#movie_list_table_body");
-
+    movieTableBodyElement.empty();
 
     // Concatenate the html tags with resultData jsonObject to create table rows
-    for (let i = 0; i < Math.min(20, resultData.length); i++) {
+    for (let i = 0; i < resultData.length; i++) {
         let rowHTML = "";
         rowHTML += "<tr>";
         rowHTML +=
@@ -59,13 +66,59 @@ function handleMovieListResult(resultData) {
 }
 
 /**
- * Once this .js is loaded, following scripts will be executed by the browser
+ * Changes the page number based on user interaction with Prev/Next buttons
+ * @param step -1 for previous, 1 for next
  */
+function changePage(step) {
+    currentPage += step;
+    fetchMovies();
+}
 
-// Makes the HTTP GET request and registers on success callback function handleStarResult
-jQuery.ajax({
-    dataType: "json", // Setting return data type
-    method: "GET", // Setting request method
-    url: "api/movie-list", // Setting request url, which is mapped by MovieListServlet
-    success: (resultData) => handleMovieListResult(resultData) // Setting callback function to handle data returned successfully by the MovieListServlet
+/**
+ * Changes the number of records per page when the user selects a new option
+ */
+function changeNumRecords() {
+    recordsPerPage = parseInt(jQuery("#numRecordsSelect").val());
+    currentPage = 1; // Reset to first page whenever N changes
+    fetchMovies();
+}
+
+/**
+ * Initialize the script
+ */
+jQuery(document).ready(function() {
+    // Event listeners for pagination controls
+    jQuery("#prevButton").click(function() { changePage(-1); });
+    jQuery("#nextButton").click(function() { changePage(1); });
+    jQuery("#numRecordsSelect").change(changeNumRecords);
+
+    // Initial fetch of movies
+    fetchMovies();
 });
+
+// /**
+//  * Once this .js is loaded, following scripts will be executed by the browser
+//  */
+//
+// // Makes the HTTP GET request and registers on success callback function handleStarResult
+// jQuery.ajax({
+//     dataType: "json", // Setting return data type
+//     method: "GET", // Setting request method
+//     url: "api/movie-list", // Setting request url, which is mapped by MovieListServlet
+//     success: (resultData) => handleMovieListResult(resultData) // Setting callback function to handle data returned successfully by the MovieListServlet
+// });
+/**
+ * Fetches movies from the server based on the current page and number of records per page
+ */
+function fetchMovies() {
+    jQuery.ajax({
+        dataType: "json",
+        method: "GET",
+        url: `api/movie-list?page=${currentPage}&size=${recordsPerPage}`,
+        success: handleMovieListResult,
+        error: function(error) {
+            console.error('Error fetching data: ', error);
+            alert('Error fetching movie data. Please try again.');
+        }
+    });
+}

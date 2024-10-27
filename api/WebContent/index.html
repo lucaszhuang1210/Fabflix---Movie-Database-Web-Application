@@ -69,7 +69,7 @@
     </div>
 </form>
 
-<h1>Top 20 Rated Movies</h1>
+<h1>Result</h1>
 <!-- Id "movie_list_table" is useful for jQuery to find the html element with id, class here is mapping to Bootstrap defined class CSS -->
 <table id="movie_list_table" class="table table-striped">
     <!-- Create a table header -->
@@ -88,7 +88,18 @@
     <tbody id=movie_list_table_body></tbody>
 </table>
 
-<!-- Load jQuery and Bootstrap JS -->
+<!-- Pagination Controls -->
+<div>
+    <button onclick="changePage(-1)">Prev</button>
+    <button onclick="changePage(1)">Next</button>
+    <select id="numRecordsSelect" onchange="changeNumRecords()">
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+    </select>
+</div>
+<!-- Load jQuery and Bootstrap JS-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
