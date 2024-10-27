@@ -5,7 +5,7 @@ $(document).ready(function() {
     // Display cart contents
     function displayCart() {
         const cartTableBody = $("#cart_table_body");
-        
+
         cartTableBody.empty();
         let totalPrice = 0;
 
