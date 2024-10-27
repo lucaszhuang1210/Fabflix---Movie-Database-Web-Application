@@ -52,10 +52,11 @@ public class SingleMovieServlet extends HttpServlet {
         try (Connection conn = dataSource.getConnection()) {
             // Get a connection from dataSource
             // Construct a query with parameter represented by "?"
+            // below sorted by the number of movies played (found in moviedb), decreasing order. Use alphabetical order to break ties.
             String query = "SELECT m.id as movieId, m.title, m.year, m.director, " +
-                    "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name SEPARATOR ', ') as genres, " +
-                    "GROUP_CONCAT(DISTINCT s.name ORDER BY s.name SEPARATOR ', ') as stars, " +
-                    "GROUP_CONCAT(DISTINCT s.id ORDER BY s.id SEPARATOR ', ') as star_ids, " +
+                    "GROUP_CONCAT(DISTINCT g.name ORDER BY g.name ASC SEPARATOR ', ') as genres, " +
+                    "GROUP_CONCAT(DISTINCT s.name ORDER BY star_movie_count DESC, s.name ASC SEPARATOR ', ') as stars, " +
+                    "GROUP_CONCAT(DISTINCT s.id ORDER BY star_movie_count DESC, s.name ASC SEPARATOR ', ') as star_ids, " +
                     "r.rating " +
                     "FROM movies m " +
                     "JOIN genres_in_movies gim ON m.id = gim.movieId " +
@@ -63,8 +64,14 @@ public class SingleMovieServlet extends HttpServlet {
                     "JOIN stars_in_movies sim ON m.id = sim.movieId " +
                     "JOIN stars s ON sim.starId = s.id " +
                     "LEFT JOIN ratings r ON m.id = r.movieId " +
+                    "LEFT JOIN (SELECT s.id as starId, COUNT(sim.movieId) as star_movie_count " +
+                    "           FROM stars s " +
+                    "           JOIN stars_in_movies sim ON s.id = sim.starId " +
+                    "           GROUP BY s.id) as star_counts " +
+                    "ON s.id = star_counts.starId " +
                     "WHERE m.id = ? " +
                     "GROUP BY m.id, m.title, m.year, m.director, r.rating";
+
 
             // Declare our statement
             PreparedStatement statement = conn.prepareStatement(query);
@@ -80,7 +87,6 @@ public class SingleMovieServlet extends HttpServlet {
 
             // Iterate through each row of rs
             while (rs.next()) {
-                //TODO: add movie_stars_id
                 String movieId = rs.getString("movieId");
                 String movieTitle = rs.getString("title");
                 String movieYear = rs.getString("year");
@@ -130,4 +136,3 @@ public class SingleMovieServlet extends HttpServlet {
     }
 
 }
-
