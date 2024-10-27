@@ -249,6 +249,14 @@ function handleMovieListResult(resultData) {
             }
             rowHTML += "<th>" + starHTML + "</th>";
             rowHTML += "<th>" + movies[i]["movie_rating"] + "</th>";
+
+            // Add the "Add to Cart" button with a unique data attribute for each movie
+            rowHTML += `<th>
+                            <button class='btn btn-success add-to-cart-btn' 
+                                    data-movie-id='${movies[i]['movie_id']}' 
+                                    data-movie-title='${movies[i]['movie_title']}'>Add to Cart</button>
+                        </th>`;
+
             rowHTML += "</tr>";
 
             movieTableBodyElement.append(rowHTML);

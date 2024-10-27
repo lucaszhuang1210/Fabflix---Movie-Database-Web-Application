@@ -36,7 +36,10 @@ function handleResult(resultData) {
         movieInfoElement.append("<p>Movie Title: " + resultData[0]["movie_title"] + "</p>" +
             "<p>Release Year: " + resultData[0]["movie_year"] + "</p>" +
             "<p>Director: " + resultData[0]["movie_director"] + "</p>" +
-            "<p>Rating: " + (resultData[0]["movie_rating"] || "N/A") + "</p>");
+            "<p>Rating: " + (resultData[0]["movie_rating"] || "N/A") + "</p>"+
+            // Add the "Add to Cart" button with a unique ID for the movie
+            `<button class='btn btn-success add-to-cart-btn' data-movie-id='${resultData[0]["movie_id"]}' 
+            data-movie-title='${resultData[0]["movie_title"]}'>Add to Cart</button>`);
 
         // Handle Genres
         console.log("handleResult: populating genres from resultData");
