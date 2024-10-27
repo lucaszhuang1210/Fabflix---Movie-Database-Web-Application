@@ -1,3 +1,5 @@
+
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -13,32 +15,89 @@
 
     <title>Single Star</title>
     <style>
+        /* Background Styling */
         body {
-            background-color: skyblue; /* Body background color */
+            background: linear-gradient(to right, #87CEFA, #B0E0E6); /* Soft blue gradient */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
         }
+
+        /* Header Styling */
         h1 {
             text-align: center;
-            text-shadow: 2px 2px 5px #0372df;
+            color: #ffffff;
+            font-size: 3rem;
+            margin: 30px 0;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
         }
+
+        /* Navigation Bar Styling */
         .icon-bar {
             width: 100%; /* Full-width */
-            background-color: #555; /* Dark-grey background */
+            background-color: #333; /* Dark-grey background */
             overflow: auto; /* Overflow due to float */
+            padding: 10px 0;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
         }
+
         .icon-bar a {
             float: left; /* Float links side by side */
             text-align: center; /* Center-align text */
-            width: 20%; /* Equal width (5 icons with 20% width each = 100%) */
+            width: 33.33%; /* Equal width (3 icons with 33.33% width each) */
             padding: 12px 0; /* Some top and bottom padding */
             transition: all 0.3s ease; /* Add transition for hover effects */
             color: white; /* White text color */
-            font-size: 36px; /* Increased font size */
+            font-size: 28px; /* Slightly smaller font size */
+            text-decoration: none;
         }
+
         .icon-bar a:hover {
-            background-color: #000; /* Add a hover color */
+            background-color: #555; /* Darker hover color */
         }
+
         .active {
-            background-color: #04AA6D; /* Add an active/current color */
+            background-color: #04AA6D; /* Green active/current color */
+        }
+
+        /* Table Styling */
+        #movie_table {
+            margin: 30px auto;
+            width: 80%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        #movie_table thead {
+            background-color: #0372df;
+            color: #fff;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+
+        #movie_table th, #movie_table td {
+            text-align: center;
+            padding: 15px;
+        }
+
+        /* Button Styling */
+        button {
+            background-color: #007BFF; /* Bootstrap primary color */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 20px auto;
+            display: block;
+            font-size: 16px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
         }
     </style>
 </head>
@@ -53,7 +112,9 @@
 <h1>Star Information</h1>
 
 <!-- H3 body is left empty here, will be populated with the data retrieved with single-star.js -->
-<h3 id="star_info"></h3>
+<h3 id="star_info" style="text-align: center; color: #ffffff; text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5); margin-bottom: 30px;"></h3>
+
+<!-- Movie List Table -->
 <table id="movie_table" class="table table-striped">
     <thead>
     <tr>
@@ -88,3 +149,4 @@
 <script src="single-star.js"></script>
 </body>
 </html>
+

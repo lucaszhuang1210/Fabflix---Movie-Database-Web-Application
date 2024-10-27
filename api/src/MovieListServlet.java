@@ -8,20 +8,19 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.sql.PreparedStatement;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
-// Declaring a WebServlet called StarsServlet, which maps to url "/api/movie-list?id="
 @WebServlet(name = "MovieListServlet", urlPatterns = "/api/movie-list")
 public class MovieListServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    // Create a dataSource which registered in web.
+    // DataSource for database connection
     private DataSource dataSource;
 
     public void init(ServletConfig config) {
@@ -33,70 +32,161 @@ public class MovieListServlet extends HttpServlet {
     }
 
     /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     * Handles GET requests for movie list.
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setContentType("application/json"); // Response mime type
 
-        PrintWriter out = response.getWriter(); // Output stream to STDOUT
+        response.setContentType("application/json"); // Response MIME type
 
-        // Parse page and size parameters
-        int page = 1;
-        int size = 10;
-        try {
-            page = Integer.parseInt(request.getParameter("page"));
-            size = Integer.parseInt(request.getParameter("size"));
-        } catch (NumberFormatException e) {
-            // Write error message JSON object to output
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("errorMessage", e.getMessage());
-            out.write(jsonObject.toString());
-            // Set response status to 500 (Internal Server Error)
-            response.setStatus(500);
-        }
-        int offset = (page - 1) * size;
+        PrintWriter out = response.getWriter();
 
-        String query = "SELECT \n" +
-                    "    m.id, \n" +
-                    "    m.title, \n" +
-                    "    m.year, \n" +
-                    "    m.director, \n" +
-                    "    r.rating, \n" +
-                    "    (SELECT GROUP_CONCAT(g.name ORDER BY g.name SEPARATOR ', ') \n" +
-                    "     FROM genres_in_movies gm \n" +
-                    "     JOIN genres g ON gm.genreId = g.id \n" +
-                    "     WHERE gm.movieId = m.id \n" +
-                    "     LIMIT 3) AS genres, \n" +  // Limit to 3 genres
-                    "    (SELECT GROUP_CONCAT(g.id ORDER BY g.name SEPARATOR ', ') \n" + // Fetch genre ids
-                    "     FROM genres_in_movies gm \n" +
-                    "     JOIN genres g ON gm.genreId = g.id \n" +
-                    "     WHERE gm.movieId = m.id \n" +
-                    "     LIMIT 3) AS genre_ids, \n" + // Fetch genre ids
-                    "    (SELECT GROUP_CONCAT(s.name ORDER BY s.name SEPARATOR ', ') \n" +
-                    "     FROM stars_in_movies sm \n" +
-                    "     JOIN stars s ON sm.starId = s.id \n" +
-                    "     WHERE sm.movieId = m.id \n" +
-                    "     LIMIT 3) AS stars, \n" +  // Limit to 3 stars
-                    "    (SELECT GROUP_CONCAT(s.id ORDER BY s.name SEPARATOR ', ') \n" +
-                    "     FROM stars_in_movies sm \n" +
-                    "     JOIN stars s ON sm.starId = s.id \n" +
-                    "     WHERE sm.movieId = m.id \n" +
-                    "     LIMIT 3) AS star_ids \n" +  // Limit to 3 star ids
-                    "FROM movies m \n" +
-                    "JOIN ratings r ON m.id = r.movieId \n" +
-                    "ORDER BY r.rating DESC \n" +
-                    "LIMIT ? OFFSET ?;";
+        try (Connection conn = dataSource.getConnection()) {
 
-        // Get a connection from dataSource and let resource manager close the connection after usage.
-        try (Connection conn = dataSource.getConnection();
-             PreparedStatement statement = conn.prepareStatement(query)) {
+            HttpSession session = request.getSession();
 
-            // Set parameters for pagination
-            statement.setInt(1, size);
-            statement.setInt(2, offset);
+            // Read parameters from request
+            String title = request.getParameter("title");
+            String year = request.getParameter("year");
+            String director = request.getParameter("director");
+            String starName = request.getParameter("star");
+            String pageStr = request.getParameter("page");
+            String sort = request.getParameter("sort");
+            String reset = request.getParameter("reset");
 
+            int page = Integer.parseInt(request.getParameter("page"));
+            int limit = Integer.parseInt(request.getParameter("limit"));
+
+            int resultsPerPage = limit;
+            int pageNumber = (pageStr != null) ? Integer.parseInt(pageStr) : 1;
+
+            // Handle reset
+            if (reset != null && reset.equals("true")) {
+                session.invalidate();
+                session = request.getSession(); // Start a new session
+            }
+
+            // Store or retrieve parameters in/from session
+            if (title != null) session.setAttribute("title", title);
+            else title = (String) session.getAttribute("title");
+
+            if (year != null) session.setAttribute("year", year);
+            else year = (String) session.getAttribute("year");
+
+            if (director != null) session.setAttribute("director", director);
+            else director = (String) session.getAttribute("director");
+
+            if (starName != null) session.setAttribute("star", starName);
+            else starName = (String) session.getAttribute("star");
+
+            if (sort != null) session.setAttribute("sort", sort);
+            else sort = (String) session.getAttribute("sort");
+
+            if (pageStr != null) session.setAttribute("page", pageNumber);
+            else if (session.getAttribute("page") != null)
+                pageNumber = (int) session.getAttribute("page");
+
+            int offset = (page - 1) * limit;
+
+            // Base query
+            String baseQuery = "SELECT DISTINCT m.id, m.title, m.year, m.director, r.rating, "
+                    + "(SELECT GROUP_CONCAT(g.name ORDER BY g.name SEPARATOR ', ') "
+                    + "FROM genres_in_movies gm JOIN genres g ON gm.genreId = g.id WHERE gm.movieId = m.id LIMIT 3) AS genres, "
+                    + "(SELECT GROUP_CONCAT(g.id ORDER BY g.name SEPARATOR ', ') "
+                    + "FROM genres_in_movies gm JOIN genres g ON gm.genreId = g.id WHERE gm.movieId = m.id LIMIT 3) AS genre_ids, "
+                    + "(SELECT GROUP_CONCAT(s.name ORDER BY s.name SEPARATOR ', ') "
+                    + "FROM stars_in_movies sm JOIN stars s ON sm.starId = s.id WHERE sm.movieId = m.id LIMIT 3) AS stars, "
+                    + "(SELECT GROUP_CONCAT(s.id ORDER BY s.name SEPARATOR ', ') "
+                    + "FROM stars_in_movies sm JOIN stars s ON sm.starId = s.id WHERE sm.movieId = m.id LIMIT 3) AS star_ids "
+                    + "FROM movies m JOIN ratings r ON m.id = r.movieId ";
+
+            StringBuilder whereClause = new StringBuilder();
+            List<String> paramList = new ArrayList<>();
+
+            // Add conditions based on search criteria
+            if (title != null && !title.trim().isEmpty()) {
+                whereClause.append((whereClause.length() == 0 ? "WHERE " : " AND ") + "m.title LIKE ?");
+                paramList.add("%" + title + "%");
+            }
+            if (year != null && !year.trim().isEmpty()) {
+                whereClause.append((whereClause.length() == 0 ? "WHERE " : " AND ") + "m.year = ?");
+                paramList.add(year);
+            }
+            if (director != null && !director.trim().isEmpty()) {
+                whereClause.append((whereClause.length() == 0 ? "WHERE " : " AND ") + "m.director LIKE ?");
+                paramList.add("%" + director + "%");
+            }
+            if (starName != null && !starName.trim().isEmpty()) {
+                baseQuery += " JOIN stars_in_movies sm ON m.id = sm.movieId "
+                        + "JOIN stars s ON sm.starId = s.id ";
+                whereClause.append((whereClause.length() == 0 ? "WHERE " : " AND ") + "s.name LIKE ?");
+                paramList.add("%" + starName + "%");
+            }
+
+            // Sorting
+//            String orderByClause = " ORDER BY ";
+//            if ("title_asc".equals(sort)) {
+//                orderByClause += "m.title ASC ";
+//            } else if ("title_desc".equals(sort)) {
+//                orderByClause += "m.title DESC ";
+//            } else if ("rating_asc".equals(sort)) {
+//                orderByClause += "r.rating ASC ";
+//            } else {
+//                orderByClause += "r.rating DESC ";
+//            }
+            // Sorting
+            String orderByClause = " ORDER BY ";
+            switch (sort) {
+                case "title_asc_rating_asc":
+                    orderByClause += "m.title ASC, r.rating ASC ";
+                    break;
+                case "title_asc_rating_desc":
+                    orderByClause += "m.title ASC, r.rating DESC ";
+                    break;
+                case "title_desc_rating_asc":
+                    orderByClause += "m.title DESC, r.rating ASC ";
+                    break;
+                case "title_desc_rating_desc":
+                    orderByClause += "m.title DESC, r.rating DESC ";
+                    break;
+                case "rating_asc_title_asc":
+                    orderByClause += "r.rating ASC, m.title ASC ";
+                    break;
+                case "rating_asc_title_desc":
+                    orderByClause += "r.rating ASC, m.title DESC ";
+                    break;
+                case "rating_desc_title_asc":
+                    orderByClause += "r.rating DESC, m.title ASC ";
+                    break;
+                case "rating_desc_title_desc":
+                    orderByClause += "r.rating DESC, m.title DESC ";
+                    break;
+                default:
+                    // Default sort by rating descending and title ascending if no valid sort option is given
+                    orderByClause += "r.rating DESC, m.title ASC ";
+                    break;
+            }
+
+            String limitClause = " LIMIT ? OFFSET ?";
+
+            String finalQuery = baseQuery + whereClause.toString() + orderByClause + limitClause;
+
+            // Prepare the statement
+            PreparedStatement statement = conn.prepareStatement(finalQuery);
+
+            int paramIndex = 1;
+            // Set parameters for WHERE clause
+            for (String param : paramList) {
+                statement.setString(paramIndex++, param);
+            }
+
+            // Set parameters for LIMIT and OFFSET
+            statement.setInt(paramIndex++, resultsPerPage);
+            statement.setInt(paramIndex++, offset);
+
+            // Execute the query
             ResultSet rs = statement.executeQuery();
 
+            // Process the results
             JsonArray jsonArray = new JsonArray();
 
             while (rs.next()) {
@@ -124,8 +214,44 @@ public class MovieListServlet extends HttpServlet {
                 jsonArray.add(jsonObject);
             }
 
-            out.write(jsonArray.toString());
-            response.setStatus(HttpServletResponse.SC_OK);
+            // Calculate total results for pagination
+            String countQuery = "SELECT COUNT(DISTINCT m.id) AS total FROM movies m ";
+
+            if (starName != null && !starName.trim().isEmpty()) {
+                countQuery += " JOIN stars_in_movies sm ON m.id = sm.movieId "
+                        + "JOIN stars s ON sm.starId = s.id ";
+            }
+
+            String finalCountQuery = countQuery + whereClause.toString();
+
+            PreparedStatement countStatement = conn.prepareStatement(finalCountQuery);
+
+            paramIndex = 1;
+            for (String param : paramList) {
+                countStatement.setString(paramIndex++, param);
+            }
+
+            ResultSet countRs = countStatement.executeQuery();
+            int totalResults = 0;
+            if (countRs.next()) {
+                totalResults = countRs.getInt("total");
+            }
+            int totalPages = (int) Math.ceil((double) totalResults / resultsPerPage);
+
+            rs.close();
+            statement.close();
+            countRs.close();
+            countStatement.close();
+
+            // Create the response object
+            JsonObject responseObject = new JsonObject();
+            responseObject.addProperty("currentPage", pageNumber);
+            responseObject.addProperty("totalPages", totalPages);
+            responseObject.add("movies", jsonArray);
+
+            // Write JSON string to output
+            out.write(responseObject.toString());
+            response.setStatus(200);
 
         } catch (Exception e) {
             // Write error message JSON object to output
@@ -133,11 +259,9 @@ public class MovieListServlet extends HttpServlet {
             jsonObject.addProperty("errorMessage", e.getMessage());
             out.write(jsonObject.toString());
 
-            // Set response status to 500 (Internal Server Error)
             response.setStatus(500);
         } finally {
             out.close();
         }
-        // Always remember to close db connection after usage. Here it's done by try-with-resources
     }
 }

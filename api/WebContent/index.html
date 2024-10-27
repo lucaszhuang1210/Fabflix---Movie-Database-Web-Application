@@ -1,40 +1,281 @@
+<!--<!doctype html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    &lt;!&ndash; Required meta tags &ndash;&gt;-->
+<!--    <meta charset="utf-8">-->
+<!--    <meta name="viewport"-->
+<!--          content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
+
+<!--    &lt;!&ndash; Bootstrap CSS &ndash;&gt;-->
+<!--    <link rel="stylesheet"-->
+<!--          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">-->
+
+<!--    <title>Movie List</title>-->
+<!--    <style>-->
+<!--        body {-->
+<!--            background-color: pink; /* body background color */-->
+<!--        }-->
+
+<!--        h1 {-->
+<!--            text-align: center;-->
+<!--            text-shadow: 2px 2px 5px #67dbdb;-->
+<!--        }-->
+
+<!--        /* Styling the form */-->
+<!--        #search_form {-->
+<!--            margin: 20px auto;-->
+<!--            width: 60%;-->
+<!--        }-->
+
+<!--        #search_form div {-->
+<!--            margin-bottom: 10px;-->
+<!--        }-->
+
+<!--        /* Pagination and sorting styles */-->
+<!--        #pagination_controls {-->
+<!--            text-align: center;-->
+<!--            margin: 20px;-->
+<!--        }-->
+
+<!--        #pagination_controls button {-->
+<!--            margin: 0 5px;-->
+<!--        }-->
+
+<!--        #sort_controls {-->
+<!--            text-align: center;-->
+<!--            margin: 20px;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<h1>Movie Search</h1>-->
+
+<!--&lt;!&ndash; Search Form &ndash;&gt;-->
+<!--<form id="search_form">-->
+<!--    <div class="form-group">-->
+<!--        <div class="form-row align-items-center">-->
+<!--            <label for="title" class="col-sm-2 col-form-label">Title:</label>-->
+<!--            <div class="col-sm-10">-->
+<!--                <input type="text" id="title" name="title" class="form-control">-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="form-row align-items-center">-->
+<!--            <label for="year" class="col-sm-2 col-form-label">Year:</label>-->
+<!--            <div class="col-sm-10">-->
+<!--                <input type="number" id="year" name="year" min="1878" class="form-control">-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="form-row align-items-center">-->
+<!--            <label for="director" class="col-sm-2 col-form-label">Director:</label>-->
+<!--            <div class="col-sm-10">-->
+<!--                <input type="text" id="director" name="director" class="form-control">-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="form-row align-items-center">-->
+<!--            <label for="star" class="col-sm-2 col-form-label">Star's Name:</label>-->
+<!--            <div class="col-sm-10">-->
+<!--                <input type="text" id="star" name="star" class="form-control">-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="form-row">-->
+<!--            <div class="col-sm-2"></div>-->
+<!--            <div class="col-sm-10">-->
+<!--                <button type="submit" class="btn btn-primary">Search</button>-->
+<!--                <button type="button" id="reset_button" class="btn btn-secondary">Reset</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</form>-->
+
+<!--&lt;!&ndash; Sorting Options &ndash;&gt;-->
+<!--&lt;!&ndash;<div id="sort_controls">&ndash;&gt;-->
+<!--&lt;!&ndash;    <label for="sort">Sort By:</label>&ndash;&gt;-->
+<!--&lt;!&ndash;    <select id="sort" name="sort">&ndash;&gt;-->
+<!--&lt;!&ndash;        <option value="rating_desc">Rating (High to Low)</option>&ndash;&gt;-->
+<!--&lt;!&ndash;        <option value="rating_asc">Rating (Low to High)</option>&ndash;&gt;-->
+<!--&lt;!&ndash;        <option value="title_asc">Title (A to Z)</option>&ndash;&gt;-->
+<!--&lt;!&ndash;        <option value="title_desc">Title (Z to A)</option>&ndash;&gt;-->
+<!--&lt;!&ndash;    </select>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--&lt;!&ndash; Sorting Options &ndash;&gt;-->
+<!--<div id="sort_controls">-->
+<!--    <label for="sort">Sort By:</label>-->
+<!--    <select id="sort" name="sort">-->
+<!--        <option value="title_asc_rating_asc">Title (A to Z), Rating (Low to High)</option>-->
+<!--        <option value="title_asc_rating_desc">Title (A to Z), Rating (High to Low)</option>-->
+<!--        <option value="title_desc_rating_asc">Title (Z to A), Rating (Low to High)</option>-->
+<!--        <option value="title_desc_rating_desc">Title (Z to A), Rating (High to Low)</option>-->
+<!--        <option value="rating_asc_title_asc">Rating (Low to High), Title (A to Z)</option>-->
+<!--        <option value="rating_asc_title_desc">Rating (Low to High), Title (Z to A)</option>-->
+<!--        <option value="rating_desc_title_asc">Rating (High to Low), Title (A to Z)</option>-->
+<!--        <option value="rating_desc_title_desc">Rating (High to Low), Title (Z to A)</option>-->
+<!--    </select>-->
+<!--</div>-->
+
+
+<!--&lt;!&ndash; Movie List Table &ndash;&gt;-->
+<!--<table id="movie_list_table" class="table table-striped">-->
+<!--    &lt;!&ndash; Table Header &ndash;&gt;-->
+<!--    <thead>-->
+<!--    <tr>-->
+<!--        <th>Title</th>-->
+<!--        <th>Year</th>-->
+<!--        <th>Director</th>-->
+<!--        <th>Genres</th>-->
+<!--        <th>Stars</th>-->
+<!--        <th>Rating</th>-->
+<!--    </tr>-->
+<!--    </thead>-->
+<!--    &lt;!&ndash; Table Body &ndash;&gt;-->
+<!--    <tbody id="movie_list_table_body"></tbody>-->
+<!--</table>-->
+
+<!--&lt;!&ndash; Dropdown Menu for Selecting the Number of Records per Page &ndash;&gt;-->
+<!--<label for="numRecordsSelect">Movies per page:</label>-->
+<!--<select id="numRecordsSelect" onchange="changeNumRecords()">-->
+<!--    <option value="10">10</option>-->
+<!--    <option value="25">25</option>-->
+<!--    <option value="50">50</option>-->
+<!--    <option value="100">100</option>-->
+<!--</select>-->
+
+<!--&lt;!&ndash; Pagination Controls &ndash;&gt;-->
+<!--<div id="pagination_controls">-->
+<!--    &lt;!&ndash; Pagination buttons will be dynamically added here &ndash;&gt;-->
+<!--</div>-->
+
+<!--&lt;!&ndash; Load jQuery and Bootstrap JS &ndash;&gt;-->
+<!--<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>-->
+<!--<script-->
+<!--        src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>-->
+
+<!--&lt;!&ndash; Load our own JS file &ndash;&gt;-->
+<!--<script src="index.js"></script>-->
+<!--</body>-->
+<!--</html>-->
+
 <!doctype html>
 <html lang="en">
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
     <title>Movie List</title>
     <style>
+        /* Background Styling */
         body {
-            background-color: pink; /* body background color */
+            background: linear-gradient(to right, #ff9a9e, #fad0c4); /* Gradient for a more vibrant look */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
         }
+
+        /* Header Styling */
         h1 {
             text-align: center;
-            text-shadow: 2px 2px 5px #67dbdb;
+            color: #ffffff;
+            font-size: 3rem;
+            margin-top: 20px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
         }
-        /* Add some styling to the form */
+
+        /* Search Form Styling */
         #search_form {
-            margin: 20px auto;
-            width: 60%;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+            margin: 30px auto;
+            width: 70%;
+            max-width: 800px;
         }
+
         #search_form div {
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        #search_form label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        /* Button Styling */
+        button {
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Sorting Options Styling */
+        #sort_controls {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin: 20px auto;
+            width: 50%;
+            max-width: 600px;
+        }
+
+        #sort_controls label {
+            font-weight: bold;
+            color: #555;
+            margin-right: 10px;
+        }
+
+        select {
+            border-radius: 5px;
+            padding: 5px;
+        }
+
+        /* Movie List Table Styling */
+        #movie_list_table {
+            margin: 30px auto;
+            width: 80%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        #movie_list_table thead {
+            background-color: #67dbdb;
+            color: #fff;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+
+        /* Dropdown for Records per Page Styling */
+        #numRecordsSelect {
+            border-radius: 5px;
+            padding: 5px;
+            margin-left: 10px;
+        }
+
+        /* Pagination Controls Styling */
+        #pagination_controls {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        #pagination_controls button {
+            margin: 5px;
+            border-radius: 5px;
+            padding: 8px 12px;
         }
     </style>
 </head>
-
 <body>
+
 <h1>Movie Search</h1>
+
 <!-- Search Form -->
-<!-- Search Form -->
-<form id="search_form" action="movie-list.html" method="GET">
+<form id="search_form">
     <div class="form-group">
         <div class="form-row align-items-center">
             <label for="title" class="col-sm-2 col-form-label">Title:</label>
@@ -45,7 +286,7 @@
         <div class="form-row align-items-center">
             <label for="year" class="col-sm-2 col-form-label">Year:</label>
             <div class="col-sm-10">
-                <input type="number" id="year" name="year" min="1900" class="form-control">
+                <input type="number" id="year" name="year" min="1878" class="form-control">
             </div>
         </div>
         <div class="form-row align-items-center">
@@ -64,18 +305,32 @@
             <div class="col-sm-2"></div>
             <div class="col-sm-10">
                 <button type="submit" class="btn btn-primary">Search</button>
+                <button type="button" id="reset_button" class="btn btn-secondary">Reset</button>
             </div>
         </div>
     </div>
 </form>
 
-<h1>Result</h1>
-<!-- Id "movie_list_table" is useful for jQuery to find the html element with id, class here is mapping to Bootstrap defined class CSS -->
+<!-- Sorting Options -->
+<div id="sort_controls">
+    <label for="sort">Sort By:</label>
+    <select id="sort" name="sort">
+        <option value="title_asc_rating_asc">Title (A to Z), Rating (Low to High)</option>
+        <option value="title_asc_rating_desc">Title (A to Z), Rating (High to Low)</option>
+        <option value="title_desc_rating_asc">Title (Z to A), Rating (Low to High)</option>
+        <option value="title_desc_rating_desc">Title (Z to A), Rating (High to Low)</option>
+        <option value="rating_asc_title_asc">Rating (Low to High), Title (A to Z)</option>
+        <option value="rating_asc_title_desc">Rating (Low to High), Title (Z to A)</option>
+        <option value="rating_desc_title_asc">Rating (High to Low), Title (A to Z)</option>
+        <option value="rating_desc_title_desc">Rating (High to Low), Title (Z to A)</option>
+    </select>
+</div>
+
+<!-- Movie List Table -->
 <table id="movie_list_table" class="table table-striped">
-    <!-- Create a table header -->
+    <!-- Table Header -->
     <thead>
     <tr>
-        <!-- Titles of each column-->
         <th>Title</th>
         <th>Year</th>
         <th>Director</th>
@@ -84,14 +339,13 @@
         <th>Rating</th>
     </tr>
     </thead>
-    <!-- Table body is left empty here, will be populated with the data retrieved with index.js -->
-    <tbody id=movie_list_table_body></tbody>
+    <!-- Table Body -->
+    <tbody id="movie_list_table_body"></tbody>
 </table>
 
-<!-- Pagination Controls -->
-<div>
-    <button onclick="changePage(-1)">Prev</button>
-    <button onclick="changePage(1)">Next</button>
+<!-- Dropdown Menu for Selecting the Number of Records per Page -->
+<div style="text-align: center; margin: 20px;">
+    <label for="numRecordsSelect">Movies per page:</label>
     <select id="numRecordsSelect" onchange="changeNumRecords()">
         <option value="10">10</option>
         <option value="25">25</option>
@@ -99,9 +353,14 @@
         <option value="100">100</option>
     </select>
 </div>
-<!-- Load jQuery and Bootstrap JS-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+
+<!-- Pagination Controls -->
+<div id="pagination_controls">
+    <!-- Pagination buttons will be dynamically added here -->
+</div>
+
+<!-- Load jQuery and Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 <!-- Load our own JS file -->
