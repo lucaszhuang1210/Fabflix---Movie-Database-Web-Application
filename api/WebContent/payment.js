@@ -31,8 +31,8 @@ $(document).ready(function() {
             success: function(response) {
                 if (response.status === "success") {
                     alert("Transaction Successful!");
-                    localStorage.removeItem('shoppingCart');
                     window.location.href = "confirmation.html";
+                    //localStorage.removeItem('shoppingCart');
                 } else {
                     alert("Payment failed: " + response.message);
                 }

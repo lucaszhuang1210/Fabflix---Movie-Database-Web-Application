@@ -29,8 +29,10 @@ public class PaymentServlet extends HttpServlet {
         }
     }
 
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        System.out.println("before doPost");
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
 
@@ -43,24 +45,14 @@ public class PaymentServlet extends HttpServlet {
         }
 
         try (Connection conn = dataSource.getConnection()) {
+            System.out.println("before sql");
             JsonObject requestData = new com.google.gson.JsonParser().parse(jsonBody.toString()).getAsJsonObject();
             String firstName = requestData.get("first_name").getAsString();
             String lastName = requestData.get("last_name").getAsString();
             String cardNumber = requestData.get("card_number").getAsString();
             String expirationDate = requestData.get("expiration_date").getAsString();
-            JsonArray cartItems = requestData.getAsJsonArray("cart_items");
 
-            // Ensure the expiration date is in the correct format YYYY-MM-DD
-            String formattedExpirationDate = convertDateToDatabaseFormat(expirationDate);
-            if (formattedExpirationDate == null) {
-                JsonObject responseObject = new JsonObject();
-                responseObject.addProperty("status", "error");
-                responseObject.addProperty("message", "Invalid date format. Please use YYYY-MM-DD.");
-                out.write(responseObject.toString());
-                response.setStatus(400);
-                return;
-            }
-
+            System.out.println("before validate credit card");
             // Validate the credit card info against the database
             String query = "SELECT c.id FROM customers c JOIN creditcards cc ON c.ccId = cc.id " +
                     "WHERE cc.firstName = ? AND cc.lastName = ? AND cc.id = ? AND cc.expiration = ?";
@@ -68,69 +60,34 @@ public class PaymentServlet extends HttpServlet {
             statement.setString(1, firstName);
             statement.setString(2, lastName);
             statement.setString(3, cardNumber);
-            statement.setString(4, formattedExpirationDate);
-
+            statement.setString(4, expirationDate);
+            System.out.println("before executeQuery");
             ResultSet rs = statement.executeQuery();
+            System.out.println("after executeQuery");
             JsonObject responseObject = new JsonObject();
 
+            System.out.println("rs.next()");
             if (rs.next()) {
                 // Credit card is valid; retrieve the customer ID
                 int customerId = rs.getInt("id");
 
                 conn.setAutoCommit(false); // Begin transaction
 
+                System.out.println("2nd sql");
                 // Insert sale for each movie in the cart
-                String saleQuery = "INSERT INTO sales (customerId, movieId, saleDate) VALUES (?, ?, NOW())";
+
+                //String saleQuery = "INSERT INTO sales (customerId, movieId, saleDate) VALUES (?, ?, CURNOW())";
+                String saleQuery = "INSERT INTO sales (customerId, movieId, saleDate) VALUES (?, ?, new Date().getTime()))";
                 PreparedStatement saleStatement = conn.prepareStatement(saleQuery, Statement.RETURN_GENERATED_KEYS);
 
-                JsonArray orderDetails = new JsonArray();
-                double totalPrice = 0.0;
-
-                for (int i = 0; i < cartItems.size(); i++) {
-                    JsonObject item = cartItems.get(i).getAsJsonObject();
-                    String movieId = item.get("movie_id").getAsString();
-                    int quantity = item.get("quantity").getAsInt();
-                    double price = item.get("price").getAsDouble();
-                    totalPrice += price * quantity;
-
-                    // Insert a separate record for each quantity
-                    for (int j = 0; j < quantity; j++) {
-                        saleStatement.setInt(1, customerId);
-                        saleStatement.setString(2, movieId);
-                        saleStatement.addBatch();
-                    }
-
-                    // For order confirmation
-                    JsonObject orderItem = new JsonObject();
-                    orderItem.addProperty("movie_id", movieId);
-                    orderItem.addProperty("quantity", quantity);
-                    orderItem.addProperty("price", price);
-                    orderDetails.add(orderItem);
-                }
-
-                // Execute batch and commit transaction
-                saleStatement.executeBatch();
-                conn.commit();
-
-                // Retrieve the generated sale IDs
-                ResultSet saleKeys = saleStatement.getGeneratedKeys();
-                JsonArray saleIds = new JsonArray();
-                while (saleKeys.next()) {
-                    saleIds.add(saleKeys.getInt(1));
-                }
-
-                // Prepare the response
                 responseObject.addProperty("status", "success");
-                responseObject.add("sale_ids", saleIds);
-                responseObject.add("order_details", orderDetails);
-                responseObject.addProperty("total_price", totalPrice);
+                response.setStatus(200);
             } else {
                 responseObject.addProperty("status", "error");
                 responseObject.addProperty("message", "Invalid payment information.");
             }
 
             out.write(responseObject.toString());
-            response.setStatus(200);
 
         } catch (Exception e) {
             try {
@@ -147,15 +104,4 @@ public class PaymentServlet extends HttpServlet {
         }
     }
 
-    // Utility method to ensure the date is in the correct format (YYYY-MM-DD)
-    private String convertDateToDatabaseFormat(String date) {
-        try {
-            // Assuming the date input might be in 'YYYY-MM' or 'YYYY-MM-DD' format
-            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
-            inputFormat.setLenient(false); // Strict parsing
-            return inputFormat.format(inputFormat.parse(date));
-        } catch (ParseException e) {
-            return null; // Return null if the date format is invalid
-        }
-    }
 }
