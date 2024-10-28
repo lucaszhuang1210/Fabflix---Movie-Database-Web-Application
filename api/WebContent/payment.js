@@ -1,5 +1,6 @@
 $(document).ready(function() {
     const cart = JSON.parse(localStorage.getItem('shoppingCart')) || {};
+    console.log(cart);
 
     // Calculate total price
     let totalPrice = 0;
@@ -30,7 +31,9 @@ $(document).ready(function() {
             contentType: "application/json",
             success: function(response) {
                 if (response.status === "success") {
+                    console.log(cart);
                     alert("Transaction Successful!");
+                    console.log(cart);
                     window.location.href = "confirmation.html";
                     //localStorage.removeItem('shoppingCart');
                 } else {
