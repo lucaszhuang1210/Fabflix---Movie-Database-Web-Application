@@ -54,6 +54,20 @@ Leveraging AWS cloud services, the application is designed to be both scalable a
 
 ---
 
+## Substring Matching Using LIKE Predicate
+We have implemented substring matching in our application to allow customers to search for movies using partial matches for the title, director’s name, and star’s name. This functionality is achieved using the `LIKE` predicate in our SQL queries.
+
+### How and Where We Use LIKE:
+- **Title Search**: We use the `LIKE` operator to enable substring matching on the movie title. This allows users to search for movies that contain the keyword anywhere in the title. For example, searching for “Term” will match movies like “Terminator” and “The Terminal”.
+- **Director Search**: For director searches, we use `LIKE` to match directors whose names contain the provided keyword. This makes it easier for users to find movies directed by a specific director even if they only know part of the name.
+- **Star’s Name Search**: When searching by a star’s name, we use `LIKE` to enable substring matching on the star’s name. Users can find movies featuring actors or actresses based on partial name information.
+
+### Usage Details:
+- **Wildcard Characters**: We utilize the `%` wildcard character with the `LIKE` operator to represent zero or more characters in the search pattern. This allows for flexible matching of search keywords within the text fields.
+- **Case Sensitivity**: Our database is configured such that the `LIKE` operator is case-insensitive for string comparisons. This means that searches are not sensitive to the case of the input, improving user experience.
+
+---
+
 ## Key Technologies Used:
 - **Java**: Core backend logic.
 - **JavaScript**: Frontend interactions and dynamic content generation.
