@@ -326,7 +326,7 @@ function fetchMovies() {
         },
         success: (resultData) => handleMovieListResult(resultData)
     });
-}
+} 
 
 /**
  * Save the current state in the session before navigation
