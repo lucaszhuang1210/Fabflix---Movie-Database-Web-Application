@@ -7,184 +7,6 @@
  *      1. Use jQuery to talk to backend API to get the json data.
  *      2. Populate the data to correct html elements.
  */
-//
-//
-// /**
-//  * Handles the data returned by the API and populates data into HTML elements.
-//  * @param resultData jsonObject
-//  */
-// function handleMovieListResult(resultData) {
-//     console.log("handleMovieListResult: populating movie table from resultData");
-//
-//     // Extract pagination info
-//     let currentPage = resultData.currentPage;
-//     let totalPages = resultData.totalPages;
-//     let movies = resultData.movies;
-//
-//     let movieTableBodyElement = jQuery("#movie_list_table_body");
-//
-//     // Clear existing content
-//     movieTableBodyElement.empty();
-//
-//     // Check if any results were returned
-//     if (movies.length === 0) {
-//         movieTableBodyElement.append("<tr><td colspan='6'>No movies found matching your search criteria.</td></tr>");
-//     } else {
-//         // Populate the table
-//         for (let i = 0; i < movies.length; i++) {
-//             let rowHTML = "";
-//             rowHTML += "<tr>";
-//             rowHTML +=
-//                 "<th>" +
-//                 '<a href=" ' + movies[i]['movie_id'] + '">'
-//                 + movies[i]["movie_title"] +
-//                 '</a >' +
-//                 "</th>";
-//
-//             rowHTML += "<th>" + movies[i]["movie_year"] + "</th>";
-//             rowHTML += "<th>" + movies[i]["movie_director"] + "</th>";
-//             rowHTML += "<th>" + movies[i]["movie_genres"] + "</th>";
-//
-//             // Create links for each star
-//             let starNames = movies[i]["movie_stars"] ? movies[i]["movie_stars"].split(", ") : [];
-//             let starIds = movies[i]["movie_star_ids"] ? movies[i]["movie_star_ids"].split(", ") : [];
-//             let starHTML = "";
-//             let starLimit = Math.min(3, starNames.length);
-//             for (let k = 0; k < starLimit; k++) {
-//                 starHTML += '<a href="single-star.html?id=' + starIds[k] + '">' + starNames[k] + '</a >';
-//                 if (k < starLimit - 1) {
-//                     starHTML += ", ";
-//                 }
-//             }
-//             rowHTML += "<th>" + starHTML + "</th>";
-//             rowHTML += "<th>" + movies[i]["movie_rating"] + "</th>";
-//             rowHTML += "</tr>";
-//
-//             movieTableBodyElement.append(rowHTML);
-//         }
-//     }
-//
-//     // Create pagination controls
-//     createPaginationControls(currentPage, totalPages);
-// }
-//
-// /**
-//  * Creates pagination controls based on current page and total pages.
-//  * @param currentPage
-//  * @param totalPages
-//  */
-// function createPaginationControls(currentPage, totalPages) {
-//     let paginationControls = jQuery("#pagination_controls");
-//     paginationControls.empty();
-//
-//     if (currentPage > 1) {
-//         paginationControls.append('<button id="prev_page" class="btn btn-primary">Previous</button>');
-//         jQuery("#prev_page").click(function () {
-//             changePage(currentPage - 1);
-//         });
-//     }
-//
-//     paginationControls.append(' Page ' + currentPage + ' of ' + totalPages + ' ');
-//
-//     if (currentPage < totalPages) {
-//         paginationControls.append('<button id="next_page" class="btn btn-primary">Next</button>');
-//         jQuery("#next_page").click(function () {
-//             changePage(currentPage + 1);
-//         });
-//     }
-// }
-//
-// /**
-//  * Sends an AJAX request to change the page.
-//  * @param pageNumber
-//  */
-// function changePage(pageNumber) {
-//     // Collect current sort option
-//     let sortOption = jQuery("#sort").val();
-//
-//     // Send AJAX request with new page number
-//     jQuery.ajax({
-//         dataType: "json",
-//         method: "GET",
-//         url: "api/movie-list",
-//         data: { page: pageNumber, sort: sortOption },
-//         success: (resultData) => handleMovieListResult(resultData)
-//     });
-// }
-//
-// // Initial load: fetch movies based on session data
-// jQuery.ajax({
-//     dataType: "json",
-//     method: "GET",
-//     url: "api/movie-list",
-//     success: (resultData) => handleMovieListResult(resultData)
-// });
-//
-// // Attach a submit event handler to the search form
-// jQuery("#search_form").submit(function (event) {
-//     // Prevent the default form submission
-//     event.preventDefault();
-//
-//     // Collect input values
-//     let title = jQuery("#title").val();
-//     let year = jQuery("#year").val();
-//     let director = jQuery("#director").val();
-//     let star = jQuery("#star").val();
-//     let sortOption = jQuery("#sort").val();
-//
-//     // Send AJAX request to the servlet
-//     jQuery.ajax({
-//         dataType: "json",
-//         method: "GET",
-//         url: "api/movie-list",
-//         data: {
-//             title: title,
-//             year: year,
-//             director: director,
-//             star: star,
-//             sort: sortOption,
-//             page: 1 // Start from first page when new search is made
-//         },
-//         success: (resultData) => handleMovieListResult(resultData)
-//     });
-// });
-//
-// // Handle sorting change
-// jQuery("#sort").change(function () {
-//     // Collect current sort option
-//     let sortOption = jQuery("#sort").val();
-//
-//     // Send AJAX request with sort parameter
-//     jQuery.ajax({
-//         dataType: "json",
-//         method: "GET",
-//         url: "api/movie-list",
-//         data: { sort: sortOption },
-//         success: (resultData) => handleMovieListResult(resultData)
-//     });
-// });
-//
-// // Reset button handler
-// jQuery("#reset_button").click(function () {
-//     // Clear search fields
-//     jQuery("#title").val('');
-//     jQuery("#year").val('');
-//     jQuery("#director").val('');
-//     jQuery("#star").val('');
-//
-//     // Reset sort option
-//     jQuery("#sort").val('rating_desc');
-//
-//     // Send AJAX request to reset search
-//     jQuery.ajax({
-//         dataType: "json",
-//         method: "GET",
-//         url: "api/movie-list",
-//         data: { reset: true },
-//         success: (resultData) => handleMovieListResult(resultData)
-//     });
-// });
-
 
 // Global variables to store pagination, sorting, and search-related information
 let currentPage = 1;
@@ -193,10 +15,12 @@ let numRecordsPerPage = 10; // Default number of records per page
 // Global variables to store the user's search and sorting choices
 let currentSortOption = 'rating_desc'; // Default sorting option
 let currentSearchCriteria = {
-    title: '',
-    year: '',
-    director: '',
-    star: ''
+        title: '',
+        year: '',
+        director: '',
+        star: '',
+        genre: '',
+        initial: '',
 };
 
 /**
@@ -322,11 +146,13 @@ function fetchMovies() {
             title: currentSearchCriteria.title,
             year: currentSearchCriteria.year,
             director: currentSearchCriteria.director,
-            star: currentSearchCriteria.star
+            star: currentSearchCriteria.star,
+            genre: currentSearchCriteria.genre,
+            initial: currentSearchCriteria.initial
         },
         success: (resultData) => handleMovieListResult(resultData)
     });
-} 
+}
 
 /**
  * Save the current state in the session before navigation
@@ -343,10 +169,47 @@ function saveSessionState() {
             title: currentSearchCriteria.title,
             year: currentSearchCriteria.year,
             director: currentSearchCriteria.director,
-            star: currentSearchCriteria.star
+            star: currentSearchCriteria.star,
+            genre: currentSearchCriteria.genre,
+            initial: currentSearchCriteria.initial
         }
     });
 }
+
+function fetchTitleInitials() {
+    populateTitleList("#title_initial_list");
+}
+
+function populateTitleList(containerId) {
+    let container = $(containerId);
+    container.empty(); // Clear existing content
+
+    // Append numbers 0-9
+    for (let i = 0; i <= 9; i++) {
+        container.append(`<a href="#" class="browse-title" data-letter="${i}">${i}</a> `);
+    }
+    // Append letters A-Z
+    for (let i = 65; i <= 90; i++) {
+        let letter = String.fromCharCode(i);
+        container.append(`<a href="#" class="browse-title" data-letter="${letter}">${letter}</a> `);
+    }
+    // Append '*'
+    container.append('<a href="#" class="browse-title" data-letter="*">*</a>');
+
+    // Event binding
+    container.find(".browse-title").off("click").on("click", function(event) {
+        event.preventDefault();
+        let letter = $(this).data("letter");
+
+        currentSearchCriteria.initial = letter;
+        currentPage = 1; // Reset to the first page
+
+        saveSessionState();
+        fetchMovies(); // Fetch based on title initial
+    });
+}
+
+
 
 // Load initial data when the page loads
 jQuery(document).ready(function() {
@@ -372,8 +235,10 @@ jQuery(document).ready(function() {
                 jQuery("#star").val(currentSearchCriteria.star);
                 jQuery("#sort").val(currentSortOption);
 
+                fetchTitleInitials();
                 fetchMovies();
             } else {
+                fetchTitleInitials();
                 fetchMovies();
             }
         }
@@ -407,14 +272,16 @@ jQuery("#sort").change(function () {
 });
 
 // Reset button event handler
+// Reset button event handler
 jQuery("#reset_button").click(function () {
     // Clear search fields
-    currentSearchCriteria = {
-        title: '',
-        year: '',
-        director: '',
-        star: ''
-    };
+    currentSearchCriteria.title = '';
+    currentSearchCriteria.year = '';
+    currentSearchCriteria.director = '';
+    currentSearchCriteria.star = '';
+    currentSearchCriteria.genre = '';
+    currentSearchCriteria.initial = "%%";
+
     currentSortOption = 'rating_desc'; // Reset sorting to the default
     currentPage = 1; // Reset to the first page
 
@@ -424,6 +291,8 @@ jQuery("#reset_button").click(function () {
     jQuery("#director").val('');
     jQuery("#star").val('');
     jQuery("#sort").val('rating_desc');
+
+
 
     saveSessionState();
     fetchMovies(); // Fetch data based on the reset criteria

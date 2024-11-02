@@ -52,6 +52,7 @@ public class MovieListServlet extends HttpServlet {
             String pageStr = request.getParameter("page");
             String sort = request.getParameter("sort");
             String reset = request.getParameter("reset");
+            String initial = request.getParameter("initial");
 
             int page = Integer.parseInt(request.getParameter("page"));
             int limit = Integer.parseInt(request.getParameter("limit"));
@@ -85,6 +86,12 @@ public class MovieListServlet extends HttpServlet {
             else if (session.getAttribute("page") != null)
                 pageNumber = (int) session.getAttribute("page");
 
+            if (initial != null && !initial.trim().isEmpty()) {
+                session.setAttribute("initial", initial);
+            } else {
+                initial = (String) session.getAttribute("initial");
+            }
+
             int offset = (page - 1) * limit;
 
             // Base query
@@ -103,7 +110,12 @@ public class MovieListServlet extends HttpServlet {
             List<String> paramList = new ArrayList<>();
 
             // Add conditions based on search criteria
-            if (title != null && !title.trim().isEmpty()) {
+            if (initial != null && !initial.trim().isEmpty()) {
+                // Use "starts with" condition for title initial search
+                whereClause.append((whereClause.length() == 0 ? "WHERE " : " AND ") + "m.title LIKE ?");
+                paramList.add(initial + "%");
+            } else if (title != null && !title.trim().isEmpty()) {
+                // Use "contains" condition for user input search
                 whereClause.append((whereClause.length() == 0 ? "WHERE " : " AND ") + "m.title LIKE ?");
                 paramList.add("%" + title + "%");
             }
@@ -122,17 +134,6 @@ public class MovieListServlet extends HttpServlet {
                 paramList.add("%" + starName + "%");
             }
 
-            // Sorting
-//            String orderByClause = " ORDER BY ";
-//            if ("title_asc".equals(sort)) {
-//                orderByClause += "m.title ASC ";
-//            } else if ("title_desc".equals(sort)) {
-//                orderByClause += "m.title DESC ";
-//            } else if ("rating_asc".equals(sort)) {
-//                orderByClause += "r.rating ASC ";
-//            } else {
-//                orderByClause += "r.rating DESC ";
-//            }
             // Sorting
             String orderByClause = " ORDER BY ";
             switch (sort) {
