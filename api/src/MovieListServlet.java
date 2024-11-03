@@ -111,10 +111,17 @@ public class MovieListServlet extends HttpServlet {
 
             // Add conditions based on search criteria
             if (initial != null && !initial.trim().isEmpty()) {
-                // Use "starts with" condition for title initial search
-                whereClause.append((whereClause.length() == 0 ? "WHERE " : " AND ") + "m.title LIKE ?");
-                paramList.add(initial + "%");
-            } else if (title != null && !title.trim().isEmpty()) {
+                if (initial.equals("*")) {
+                    // Special case for non-alphanumerical characters
+                    whereClause.append((whereClause.length() == 0 ? "WHERE " : " AND ") + "m.title REGEXP ?");
+                    paramList.add("^[^a-zA-Z0-9]");
+                } else {
+                    // Regular case for alphanumerical characters
+                    whereClause.append((whereClause.length() == 0 ? "WHERE " : " AND ") + "m.title LIKE ?");
+                    paramList.add(initial + "%");
+                }
+            }
+            if (title != null && !title.trim().isEmpty()) {
                 // Use "contains" condition for user input search
                 whereClause.append((whereClause.length() == 0 ? "WHERE " : " AND ") + "m.title LIKE ?");
                 paramList.add("%" + title + "%");
