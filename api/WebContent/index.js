@@ -176,6 +176,42 @@ function saveSessionState() {
     });
 }
 
+function fetchGenres() {
+    // Send an AJAX request to the backend to get the list of genres
+    jQuery.ajax({
+        dataType: "json",
+        method: "GET",
+        url: "api/genres",
+        success: (resultData) => {
+            populateGenreList(resultData);
+        }
+    });
+}
+
+function populateGenreList(genreData) {
+    let container = jQuery("#genre_list");
+    container.empty(); // Clear any existing content
+
+    // Populate genres in the container
+    genreData.forEach((genre) => {
+        container.append(`<a href="#" class="browse-genre" data-genre="${genre.id}">${genre.name}</a> `);
+    });
+
+    // Event binding for genre click
+    container.find(".browse-genre").off("click").on("click", function(event) {
+        event.preventDefault();
+        let genreId = jQuery(this).data("genre");
+
+        // Update the search criteria for genre browsing
+        currentSearchCriteria.genre = genreId;
+        currentPage = 1; // Reset to the first page
+
+        saveSessionState();
+        fetchMovies(); // Fetch movies based on the selected genre
+    });
+}
+
+
 function fetchTitleInitials() {
     populateTitleList("#title_initial_list");
 }
@@ -236,9 +272,11 @@ jQuery(document).ready(function() {
                 jQuery("#sort").val(currentSortOption);
 
                 fetchTitleInitials();
+                fetchGenres();
                 fetchMovies();
             } else {
                 fetchTitleInitials();
+                fetchGenres();
                 fetchMovies();
             }
         }

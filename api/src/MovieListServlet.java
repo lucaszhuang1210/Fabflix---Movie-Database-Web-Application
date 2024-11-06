@@ -53,6 +53,7 @@ public class MovieListServlet extends HttpServlet {
             String sort = request.getParameter("sort");
             String reset = request.getParameter("reset");
             String initial = request.getParameter("initial");
+            String genre = request.getParameter("genre");
 
             int page = Integer.parseInt(request.getParameter("page"));
             int limit = Integer.parseInt(request.getParameter("limit"));
@@ -92,6 +93,10 @@ public class MovieListServlet extends HttpServlet {
                 initial = (String) session.getAttribute("initial");
             }
 
+            if (genre != null) session.setAttribute("genre", genre);
+            else genre = (String) session.getAttribute("genre");
+            
+
             int offset = (page - 1) * limit;
 
             // Base query
@@ -120,6 +125,12 @@ public class MovieListServlet extends HttpServlet {
                     whereClause.append((whereClause.length() == 0 ? "WHERE " : " AND ") + "m.title LIKE ?");
                     paramList.add(initial + "%");
                 }
+            }
+            if (genre != null && !genre.trim().isEmpty()) {
+                // Filter movies by genre
+                whereClause.append((whereClause.length() == 0 ? "WHERE " : " AND ")
+                        + "EXISTS (SELECT 1 FROM genres_in_movies gm WHERE gm.movieId = m.id AND gm.genreId = ?)");
+                paramList.add(genre);
             }
             if (title != null && !title.trim().isEmpty()) {
                 // Use "contains" condition for user input search
