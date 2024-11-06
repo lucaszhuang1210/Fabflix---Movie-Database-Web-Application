@@ -58,7 +58,18 @@ function handleMovieListResult(resultData) {
 
             rowHTML += "<th>" + movies[i]["movie_year"] + "</th>";
             rowHTML += "<th>" + movies[i]["movie_director"] + "</th>";
-            rowHTML += "<th>" + movies[i]["movie_genres"] + "</th>";
+
+            // Genres with Links
+            let genres = movies[i]["movie_genres"] ? movies[i]["movie_genres"].split(", ") : [];
+            let genreIds = movies[i]["movie_genre_ids"] ? movies[i]["movie_genre_ids"].split(", ") : [];
+            let genreHTML = "";
+            for (let j = 0; j < genres.length; j++) {
+                genreHTML += `<a href="#" class="genre-link" data-genre="${genreIds[j]}">${genres[j]}</a>`;
+                if (j < genres.length - 1) {
+                    genreHTML += ", "; // Separate genres with a comma
+                }
+            }
+            rowHTML += "<th>" + genreHTML + "</th>";
 
             // Create links for each star
             let starNames = movies[i]["movie_stars"] ? movies[i]["movie_stars"].split(", ") : [];
@@ -87,6 +98,19 @@ function handleMovieListResult(resultData) {
         }
     }
 
+    // Bind click event to genre links
+    jQuery(".genre-link").off("click").on("click", function(event) {
+        event.preventDefault();
+        let genreId = jQuery(this).data("genre");
+
+        // Update the genre in the search criteria and reset to the first page
+        currentSearchCriteria.genre = genreId;
+        currentPage = 1;
+
+        saveSessionState(); // Save the new state in the session
+        fetchMovies(); // Fetch updated movie list based on the selected genre
+    });
+    
     // Create pagination controls
     createPaginationControls(currentPage, totalPages);
 }

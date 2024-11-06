@@ -95,7 +95,7 @@ public class MovieListServlet extends HttpServlet {
 
             if (genre != null) session.setAttribute("genre", genre);
             else genre = (String) session.getAttribute("genre");
-            
+
 
             int offset = (page - 1) * limit;
 
