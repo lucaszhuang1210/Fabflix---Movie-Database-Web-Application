@@ -8,18 +8,25 @@
 
 # Team Contributions
 ## project 1:
-We collaborated on setting up the environment (Tasks 1-5) and worked together on the Movie List Page (`MovieListServlet`, `index.html`, and `index.js`).
+We collaborated on setting up the environment (Tasks 1-5).
 ### Specific Contributions:
 
 - **Lucas:** Debugged and updated the Single Movie page, wrote the `README.md`, created the `moviedb` database, set up AWS, and recorded video demonstrations.
-- **Betty:** Developed Single Star and Single Movie features, created the `style.css`, fixed Maven packages setup, and assisted with AWS instance setup.
+- **Betty:** Implement Movie List Page (`MovieListServlet`, `index.html`, and `index.js`), Single Stars Page (`SingleStarServlet`, `single-star.html`, and `single-star.js`), Single Movie (`SingleMovieServlet`, `single-movie.html`, and `single-movie.js`) Page, created the `style.css`, fixed Maven packages setup, and assisted with AWS instance setup.
 
 ## project 2:
 We collaborated on designing the software architecture.
 ### Specific Contributions:
 
-- **Lucas:**  Implement the Search and Browse on the Main Page.
-- **Betty:** Implement the Shopping Cart and Login Page.
+- **Lucas:** Implement the Search and Browse on the Main Page.
+- **Betty:** Implement the Shopping Cart, Login Page.
+
+## project 3:
+We collaborates...
+### Specific Contributions:
+
+- **Lucas:** 
+- **Betty:** Adding reCAPTCHA, 
 
 ---
 
