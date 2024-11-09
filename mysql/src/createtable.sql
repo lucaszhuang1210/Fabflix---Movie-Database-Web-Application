@@ -84,3 +84,12 @@ CREATE TABLE ratings (
     numVotes INTEGER NOT NULL,
     FOREIGN KEY (movieId) REFERENCES movies(id)
 );
+
+-- Create the 'employees' table
+CREATE TABLE employees (
+    email VARCHAR(50) PRIMARY KEY,
+    password VARCHAR(20) NOT NULL,
+    fullname VARCHAR(100)
+);
+
+
