@@ -1,3 +1,4 @@
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,11 +12,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
+import java.sql.Date;
+
 
 @WebServlet(name = "PaymentServlet", urlPatterns = "/api/payment")
 public class PaymentServlet extends HttpServlet {
@@ -35,9 +36,10 @@ public class PaymentServlet extends HttpServlet {
         System.out.println("before doPost");
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-
+        Gson gson = new Gson();
         StringBuilder jsonBody = new StringBuilder();
         String line;
+
         try (BufferedReader reader = request.getReader()) {
             while ((line = reader.readLine()) != null) {
                 jsonBody.append(line);
@@ -51,6 +53,9 @@ public class PaymentServlet extends HttpServlet {
             String lastName = requestData.get("last_name").getAsString();
             String cardNumber = requestData.get("card_number").getAsString();
             String expirationDate = requestData.get("expiration_date").getAsString();
+            JsonObject cartItems = requestData.get("cart").getAsJsonObject();
+            System.out.println("cartData: " + cartItems);
+
 
             System.out.println("before validate credit card");
             // Validate the credit card info against the database
@@ -72,14 +77,29 @@ public class PaymentServlet extends HttpServlet {
                 int customerId = rs.getInt("id");
 
                 conn.setAutoCommit(false); // Begin transaction
-
-                System.out.println("2nd sql");
+                System.out.println("before 2nd sql");
                 // Insert sale for each movie in the cart
+                System.out.println("customerId," + customerId);
 
-                //String saleQuery = "INSERT INTO sales (customerId, movieId, saleDate) VALUES (?, ?, CURNOW())";
-                String saleQuery = "INSERT INTO sales (customerId, movieId, saleDate) VALUES (?, ?, new Date().getTime()))";
+                String saleQuery = "INSERT INTO sales (customerId, movieId, quantity, saleDate) VALUES (?, ?, new Date().getTime(), ?))";
                 PreparedStatement saleStatement = conn.prepareStatement(saleQuery, Statement.RETURN_GENERATED_KEYS);
 
+                System.out.println("finish saleqiery");
+
+
+                for (String movieId : cartItems.keySet()) {
+                    System.out.println("enter for loop movieid"+ movieId);
+                    JsonObject item = cartItems.getAsJsonObject(movieId);
+                    int quantity = item.get("quantity").getAsInt();
+                    System.out.println("quantity"+ quantity);
+
+                    saleStatement.setInt(1, customerId);
+                    saleStatement.setString(2, movieId);
+                    saleStatement.setInt(4, quantity);
+                    saleStatement.executeUpdate();
+                }
+
+                conn.commit();
                 responseObject.addProperty("status", "success");
                 response.setStatus(200);
             } else {

@@ -71,7 +71,8 @@ CREATE TABLE sales (
     id INTEGER AUTO_INCREMENT PRIMARY KEY NOT NULL,
     customerId INTEGER NOT NULL,
     movieId VARCHAR(10) NOT NULL,
-    saleDate DATE NOT NULL,
+    quantity INTEGER NOT NULL,
+    saleDate Date NOT NULL,
     FOREIGN KEY (customerId) REFERENCES customers(id),
     FOREIGN KEY (movieId) REFERENCES movies(id)
 );

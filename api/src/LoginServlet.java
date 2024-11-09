@@ -32,6 +32,22 @@ public class LoginServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // Output stream to STDOUT
+        PrintWriter out = response.getWriter();
+        JsonObject responseJsonObject = new JsonObject();
+
+        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+        System.out.println("gRecaptchaResponse=" + gRecaptchaResponse);
+
+        // Verify reCAPTCHA
+        try {
+            RecaptchaVerifyUtils.verify(gRecaptchaResponse);
+        } catch (Exception e) {
+            responseJsonObject.addProperty("status", "fail");
+            responseJsonObject.addProperty("message", "reCAPTCHA VERIFICATION FAILED");
+            out.write(responseJsonObject.toString());
+            return;
+        }
 
         // Retrieve parameter username and password from url request.
         String costomer_username = request.getParameter("username");
@@ -40,10 +56,6 @@ public class LoginServlet extends HttpServlet {
         // The log message can be found in localhost log
         request.getServletContext().log("getting username: " + costomer_username);
         request.getServletContext().log("getting userpassword: " + costomer_password);
-
-        // Output stream to STDOUT
-        PrintWriter out = response.getWriter();
-        JsonObject responseJsonObject = new JsonObject();
 
         // Get a connection from dataSource and let resource manager close the connection after usage.
         try (Connection conn = dataSource.getConnection()) {

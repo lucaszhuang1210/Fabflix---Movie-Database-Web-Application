@@ -69,11 +69,39 @@ $(document).ready(function() {
         modifyCart(movieId, 'delete');
     });
 
-    // Event listener for the "Proceed to Payment" button
+    //Event listener for the "Proceed to Payment" button
     $("#proceed_to_payment").click(function() {
         // Redirect to the payment page
         window.location.href = 'payment.html';
     });
+
+    // $("#proceed_to_payment").click(function() {
+    //
+    //     let cartData = JSON.stringify(shoppingCart);
+    //     // Print paymentData to the console for debugging
+    //     console.log("cartData:", cartData);
+    //     // cartData: {"tt0395445":{"title":"American Generator","quantity":1,"price":24.56},
+    //     // "tt0395642":{"title":"Loma Lynda: Episode II","quantity":2,"price":10.43},
+    //     // "tt0424773":{"title":"Addo: The King of the Beasts","quantity":1,"price":8.86}}
+    //
+    //     // Send an AJAX request to the servlet
+    //     $.ajax({
+    //         url: 'api/payment',  // This should match the URL pattern of your servlet
+    //         type: 'POST',
+    //         contentType: 'application/json',  // Make sure the server expects JSON
+    //         data: cartData,
+    //         success: function(response) {
+    //             // Assuming you still want to redirect regardless of the response:
+    //             window.location.href = 'payment.html';
+    //         },
+    //         error: function(xhr, status, error) {
+    //             console.error('Error processing payment:', status, error);
+    //             alert('Error processing payment. Please try again.');
+    //         }
+    //     });
+    // });
+
+
 
     // Load the cart on page load
     displayCart();

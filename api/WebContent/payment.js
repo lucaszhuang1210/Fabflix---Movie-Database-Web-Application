@@ -1,10 +1,10 @@
 $(document).ready(function() {
-    const cart = JSON.parse(localStorage.getItem('shoppingCart')) || {};
-    console.log(cart);
+    const shoppingCart = JSON.parse(localStorage.getItem('shoppingCart')) || {};
+    console.log(shoppingCart);
 
     // Calculate total price
     let totalPrice = 0;
-    Object.values(cart).forEach(movie => {
+    Object.values(shoppingCart).forEach(movie => {
         totalPrice += parseFloat(movie.price) * movie.quantity;
     });
     $("#total_price").text(`Total: $${totalPrice.toFixed(2)}`);
@@ -19,8 +19,9 @@ $(document).ready(function() {
             card_number: $("#card_number").val(),
             expiration_date: $("#expiration_date").val(),
             total_price: totalPrice.toFixed(2),
-            cart: cart
+            cart: shoppingCart,
         };
+        console.log("paymentData:", paymentData);
 
         // Send payment data to the backend for validation
         $.ajax({
@@ -31,9 +32,9 @@ $(document).ready(function() {
             contentType: "application/json",
             success: function(response) {
                 if (response.status === "success") {
-                    console.log(cart);
+                    console.log(shoppingCart);
                     alert("Transaction Successful!");
-                    console.log(cart);
+                    console.log(shoppingCart);
                     window.location.href = "confirmation.html";
                     //localStorage.removeItem('shoppingCart');
                 } else {
