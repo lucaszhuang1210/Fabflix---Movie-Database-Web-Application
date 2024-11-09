@@ -35,6 +35,7 @@ public class LoginFilter implements Filter {
         } else {
             chain.doFilter(request, response);
         }
+
     }
 
     private boolean isUrlAllowedWithoutLogin(String requestURI) {

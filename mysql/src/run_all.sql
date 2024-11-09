@@ -5,3 +5,6 @@ SOURCE path/to/createtable.sql;
 
 -- Run the data insertion script
 SOURCE path/to/movie-data.sql;
+
+-- Run the data stored procedure script
+SOURCE path/to/stored-procedure.sql;

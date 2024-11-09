@@ -118,4 +118,3 @@ public class AddStarServlet extends HttpServlet {
     }
 }
 
-
