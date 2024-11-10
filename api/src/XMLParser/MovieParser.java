@@ -17,31 +17,30 @@ public class MovieParser implements XMLParser {
     private String tempVal;
     private String movieID, title, director;
     private Integer year;
-    private Set<String> uniqueMovies;       // Set of existing movie IDs
-    private Map<String, Integer> genreCache; // Map of genre names to IDs
-    private List<Integer> currentMovieGenres; // Temporary list of genre IDs for the current movie
-    private Integer lastGeneratedGenreID = null;
+    private Set<String> uniqueMovies;
+    private Map<String, Integer> genreCache;
+    private List<Integer> currentMovieGenres;
+    private Integer lastGeneratedGenreID;
 
     public MovieParser(String loginUser, String loginPasswd, String loginUrl, String errorFile) {
         try {
-            // Set up database connection and prepared statements
             conn = DriverManager.getConnection(loginUrl, loginUser, loginPasswd);
-            conn.setAutoCommit(false);  // Turn off auto-commit
+            conn.setAutoCommit(false);
 
-            moviePstmt = conn.prepareStatement("INSERT INTO movies (id, title, year, director) VALUES (?, ?, ?, ?)");
-            genrePstmt = conn.prepareStatement("INSERT INTO genres (id, name) VALUES (?, ?)");
-            genreLinkPstmt = conn.prepareStatement("INSERT INTO genres_in_movies (movie_id, genre_id) VALUES (?, ?)");
+            initializePreparedStatements();
+            errorWriter = new BufferedWriter(new FileWriter(errorFile, true));
 
-            errorWriter = new BufferedWriter(new FileWriter(errorFile, true)); // Append mode
-
-            // Initialize caches with existing database entries
             loadExistingMovies();
             loadExistingGenres();
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    private void initializePreparedStatements() throws SQLException {
+        moviePstmt = conn.prepareStatement("INSERT INTO movies (id, title, year, director) VALUES (?, ?, ?, ?)");
+        genrePstmt = conn.prepareStatement("INSERT INTO genres (id, name) VALUES (?, ?)");
+        genreLinkPstmt = conn.prepareStatement("INSERT INTO genres_in_movies (movieId, genreId) VALUES (?, ?)");    }
 
     private void loadExistingMovies() {
         uniqueMovies = new HashSet<>();
@@ -63,12 +62,7 @@ public class MovieParser implements XMLParser {
             while (rs.next()) {
                 genreCache.put(rs.getString("name"), rs.getInt("id"));
             }
-            // Determine the last genre ID used
-            if (!genreCache.isEmpty()) {
-                lastGeneratedGenreID = Collections.max(genreCache.values());
-            } else {
-                lastGeneratedGenreID = 0;
-            }
+            lastGeneratedGenreID = genreCache.isEmpty() ? 0 : Collections.max(genreCache.values());
             System.out.println("Loaded existing genres into cache.");
         } catch (SQLException e) {
             logError("Error loading existing genres: " + e.getMessage());
@@ -87,7 +81,7 @@ public class MovieParser implements XMLParser {
                 public void startElement(String uri, String localName, String qName, Attributes attributes) {
                     tempVal = "";
                     if ("film".equalsIgnoreCase(qName)) {
-                        currentMovieGenres = new ArrayList<>();  // Reset genre list for each movie
+                        currentMovieGenres = new ArrayList<>();
                     }
                 }
 
@@ -111,53 +105,58 @@ public class MovieParser implements XMLParser {
                         case "dirname":
                             director = tempVal.isEmpty() ? null : tempVal;
                             break;
-                        case "cat":  // Genre
+                        case "cat":
                             addGenreToDatabase(tempVal);
                             break;
                         case "film":
-                            if (movieID == null || title == null || year == null || director == null || currentMovieGenres.isEmpty()) {
-                                logError("Incomplete movie entry: " + (movieID != null ? movieID : "unknown ") + (title != null ? title : "unknown ") + (year != null ? year : "unknown ") + (director != null ? director : "unknown ") + (currentMovieGenres.isEmpty() ? "Genre empty" : ""));
-                            } else if (!uniqueMovies.contains(movieID)) {
+                            if (isValidMovie()) {
                                 addMovieToDatabase(movieID, title, year, director);
-                                addGenresToMovie(movieID);  // Link genres to movie
+                                addGenresToMovie(movieID);
                                 uniqueMovies.add(movieID);
                             } else {
-                                logError("Duplicate movie entry ignored: " + movieID);
+                                logError("Incomplete movie entry: Movie ID: " + (movieID != null ? movieID : "unknown") + ", Title: " + (title != null ? title : "unknown") + ", Year: " + (year != null ? year : "unknown") + ", Director: " + (director != null ? director : "unknown") + (currentMovieGenres.isEmpty() ? ", Genre empty" : ""));
                             }
-                            // Reset values for the next movie
-                            movieID = null;
-                            title = null;
-                            year = null;
-                            director = null;
-                            currentMovieGenres = null;
+                            resetMovieData();
                             break;
+                        case "directorfilms":
+                            director = null;
                     }
                 }
             });
 
-            conn.commit();  // Commit all changes after parsing is complete
+            conn.commit();
             System.out.println("All movie and genre data committed to the database.");
-
         } catch (Exception e) {
-            logError("Error parsing movie file: " + e.getMessage());
-            e.printStackTrace();
-            try {
-                conn.rollback();  // Rollback in case of an error
-                System.out.println("Transaction rolled back due to an error.");
-            } catch (SQLException rollbackEx) {
-                logError("Error during rollback: " + rollbackEx.getMessage());
-                rollbackEx.printStackTrace();
-            }
+            handleParseError(e);
         } finally {
-            try {
-                conn.setAutoCommit(true);  // Re-enable auto-commit
-            } catch (SQLException e) {
-                logError("Error re-enabling auto-commit: " + e.getMessage());
-            }
             closeResources();
         }
     }
 
+    private boolean isValidMovie() {
+//        USE THIS ONE IF WE REQUIRE MOVIE TO HAVE GENRE
+//        return movieID != null && title != null && year != null && director != null && !currentMovieGenres.isEmpty();
+        return movieID != null && title != null && year != null && director != null;
+
+    }
+
+    private void resetMovieData() {
+        movieID = title = null;
+        year = null;
+        currentMovieGenres.clear();
+    }
+
+    private void handleParseError(Exception e) {
+        logError("Error parsing movie file: " + e.getMessage());
+        e.printStackTrace();
+        try {
+            conn.rollback();
+            System.out.println("Transaction rolled back due to an error.");
+        } catch (SQLException rollbackEx) {
+            logError("Error during rollback: " + rollbackEx.getMessage());
+            rollbackEx.printStackTrace();
+        }
+    }
 
     private void addMovieToDatabase(String id, String title, Integer year, String director) {
         try {
@@ -173,25 +172,21 @@ public class MovieParser implements XMLParser {
     }
 
     private void addGenreToDatabase(String genreName) {
-        try {
-            // Check if genre is already cached
-            if (genreCache.containsKey(genreName)) {
-                // Use cached genre ID
-                currentMovieGenres.add(genreCache.get(genreName));
-            } else {
-                // Generate new genre ID and insert the genre into the database
-                int newGenreID = generateNewGenreID();
+        if (genreCache.containsKey(genreName)) {
+            currentMovieGenres.add(genreCache.get(genreName));
+        } else {
+            int newGenreID = ++lastGeneratedGenreID;
+            try {
                 genrePstmt.setInt(1, newGenreID);
                 genrePstmt.setString(2, genreName);
                 genrePstmt.executeUpdate();
                 System.out.println("Inserted Genre - ID: " + newGenreID + ", Name: " + genreName);
 
-                // Cache the new genre ID and add it to the current movie's genre list
                 genreCache.put(genreName, newGenreID);
                 currentMovieGenres.add(newGenreID);
+            } catch (SQLException e) {
+                logError("Error handling genre: " + genreName + " - " + e.getMessage());
             }
-        } catch (SQLException e) {
-            logError("Error handling genre: " + genreName + " - " + e.getMessage());
         }
     }
 
@@ -207,27 +202,6 @@ public class MovieParser implements XMLParser {
         }
     }
 
-    private Integer generateNewGenreID() {
-        if (lastGeneratedGenreID == null) {
-            try (PreparedStatement stmt = conn.prepareStatement("SELECT MAX(id) AS max_id FROM genres");
-                 ResultSet rs = stmt.executeQuery()) {
-                lastGeneratedGenreID = rs.next() ? rs.getInt("max_id") : 0;
-            } catch (SQLException e) {
-                logError("Error generating new genre ID: " + e.getMessage());
-            }
-        }
-        return ++lastGeneratedGenreID;
-    }
-
-    private void logError(String message) {
-        try {
-            errorWriter.write(message);
-            errorWriter.newLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void closeResources() {
         try {
             if (moviePstmt != null) moviePstmt.close();
@@ -237,6 +211,15 @@ public class MovieParser implements XMLParser {
             if (errorWriter != null) errorWriter.close();
         } catch (Exception e) {
             e.printStackTrace();
+        }
     }
+
+    private void logError(String message) {
+        try {
+            errorWriter.write(message);
+            errorWriter.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

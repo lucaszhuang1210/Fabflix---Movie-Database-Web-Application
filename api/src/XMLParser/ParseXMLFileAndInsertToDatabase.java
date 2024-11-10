@@ -15,8 +15,12 @@ public class ParseXMLFileAndInsertToDatabase {
         setupErrorLogFile(errorFile);
 
         // Initialize and run the parser
-        ActorParser actorParser = new ActorParser(loginUser, loginPasswd, loginUrl, errorFile);
-        actorParser.parse("/Users/lucaszhuang1210gmail.com/Documents/UCI/CS122B/2024-fall-cs-122b-microhard/stanford-movies/actors_test.xml");
+//        ActorParser actorParser = new ActorParser(loginUser, loginPasswd, loginUrl, errorFile);
+        MovieParser movieParser = new MovieParser(loginUser, loginPasswd, loginUrl, errorFile);
+
+//        actorParser.parse("/Users/lucaszhuang1210gmail.com/Documents/UCI/CS122B/2024-fall-cs-122b-microhard/stanford-movies/actors_test.xml");
+        movieParser. parse("/Users/lucaszhuang1210gmail.com/Documents/UCI/CS122B/2024-fall-cs-122b-microhard/stanford-movies/movies_test.xml");
+
     }
 
 
