@@ -131,15 +131,15 @@ public class CastParser implements XMLParser {
         starPstmt.setString(1, newStarID);
         starPstmt.setString(2, actorName);
         starPstmt.executeUpdate();
-        System.out.println("Inserted new star - ID: " + newStarID + ", Name: " + actorName);
+//        System.out.println("Inserted new star - ID: " + newStarID + ", Name: " + actorName);
         return newStarID;
     }
 
     private void addStarToMovie(String starID, String movieID) throws SQLException {
         starsInMoviesPstmt.setString(1, starID);
         starsInMoviesPstmt.setString(2, movieID);
-        starsInMoviesPstmt.addBatch();
-        System.out.println("Linked star ID: " + starID + " with movie ID: " + movieID);
+        starsInMoviesPstmt.executeUpdate();
+//        System.out.println("Linked star ID: " + starID + " with movie ID: " + movieID);
     }
 
     private String generateNewStarID() {
@@ -177,7 +177,6 @@ public class CastParser implements XMLParser {
 
     private void closeResources() {
         try {
-            starsInMoviesPstmt.executeBatch();
             if (starPstmt != null) starPstmt.close();
             if (starsInMoviesPstmt != null) starsInMoviesPstmt.close();
             if (checkStarPstmt != null) checkStarPstmt.close();

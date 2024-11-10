@@ -3,7 +3,7 @@
 <!DOCTYPE CAST.DTD>
 
 <casts>
-<dirfilms><dirid>H</dirid><is>Hitchcock</is><castnote>Actors in Silent Hitchcock Films.</castnote>
+<dirfilms><dirid>RZe</dirid><is>Zemeckis</is><castnote>Actors and notes.</castnote>
 <filmc>
 <m><f>RZe19</f><t>Forrest Gump</t><a>Tom Hanks</a><p>Her</p><r>simple-minded, versatile, fast, atypical</r> <n>Forrest Gump</n><awards><award>AA</award></awards></m>
 <m><f>RZe19</f><t>Forrest Gump</t><a>s a</a><p>Und</p><r>hunk boyfriend</r></m>
@@ -14,9 +14,7 @@
 <m><f>RZe19</f><t>Forrest Gump</t><a>Elvis Presley</a><p>Und</p><r>singer, learns to shake</r> <n>Elvis Presley</n><notes><fact>inserted by SGI</fact></notes></m>
 <m><f>RZe19</f><t>Forrest Gump</t><a>John Kennedy</a><p>Und</p><r>president, congratulates</r> <n>John Kennedy</n><notes><fact>inserted by SGI</fact></notes></m>
 <m><f>RZe19</f><t>Forrest Gump</t><a>Lyndon Johnson</a><p>Und</p><r>president, congratulates</r> <n>Lyndon Johnson</n><notes><fact>inserted by SGI</fact></notes></m>
-<m><f>RZe19</f><t>Forrest Gump</t><a>Richard Nixon</a><p>Und</p><r>president, congratulates</r> <n>Richard Nixon</n><notes><fact>inserted by SGI</fact></notes></m>
+<m><f>RZe19</f><t>Forrest Gump</t><a>Richard Nixon</a><p>Und</p><r>president, congratulates</r> <n>Richard Nixon</n><notes><fact>inserted by SGI</fact></notes></m></filmc>
 
-<m><f>testMovieX</f><t>TestForMovieInDatabaseX</t><a>testActor X</a><p>Und</p><r/></m>
-</filmc>
 </dirfilms>
 </casts>

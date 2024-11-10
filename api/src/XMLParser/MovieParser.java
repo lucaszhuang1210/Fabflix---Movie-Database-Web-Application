@@ -127,7 +127,7 @@ public class MovieParser implements XMLParser {
             });
 
             conn.commit();
-            System.out.println("All movie and genre data committed to the database.");
+//            System.out.println("All movie and genre data committed to the database.");
         } catch (Exception e) {
             handleParseError(e);
         } finally {

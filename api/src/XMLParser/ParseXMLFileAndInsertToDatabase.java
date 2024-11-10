@@ -22,6 +22,11 @@ public class ParseXMLFileAndInsertToDatabase {
         String baseDir = new File(System.getProperty("user.dir")).getParentFile().getAbsolutePath();
 
         // Construct relative paths from the base directory
+//        **************************TEST CASES**************************
+//        String actorFilePath = baseDir + "/stanford-movies/actors_test.xml";
+//        String movieFilePath = baseDir + "/stanford-movies/movies_test.xml";
+//        String castFilePath = baseDir + "/stanford-movies/cast_test.xml";
+
         String actorFilePath = baseDir + "/stanford-movies/actors63.xml";
         String movieFilePath = baseDir + "/stanford-movies/mains243.xml";
         String castFilePath = baseDir + "/stanford-movies/casts124.xml";
