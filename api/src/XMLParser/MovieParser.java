@@ -12,7 +12,7 @@ import java.util.*;
 
 public class MovieParser implements XMLParser {
     private Connection conn;
-    private PreparedStatement moviePstmt, genrePstmt, genreLinkPstmt;
+    private PreparedStatement moviePstmt, genrePstmt, genreLinkPstmt, ratingsPstmt;
     private BufferedWriter errorWriter;
     private String tempVal;
     private String movieID, title, director;
@@ -40,7 +40,9 @@ public class MovieParser implements XMLParser {
     private void initializePreparedStatements() throws SQLException {
         moviePstmt = conn.prepareStatement("INSERT INTO movies (id, title, year, director) VALUES (?, ?, ?, ?)");
         genrePstmt = conn.prepareStatement("INSERT INTO genres (id, name) VALUES (?, ?)");
-        genreLinkPstmt = conn.prepareStatement("INSERT INTO genres_in_movies (movieId, genreId) VALUES (?, ?)");    }
+        genreLinkPstmt = conn.prepareStatement("INSERT INTO genres_in_movies (movieId, genreId) VALUES (?, ?)");
+        ratingsPstmt = conn.prepareStatement("INSERT INTO ratings (movieId, rating, numVotes) VALUES (?, 0, 0)");
+    }
 
     private void loadExistingMovies() {
         uniqueMovies = new HashSet<>();
@@ -102,7 +104,7 @@ public class MovieParser implements XMLParser {
                         case "year":
                             year = tempVal.matches("\\d{4}") ? Integer.parseInt(tempVal) : null;
                             break;
-                        case "dirname":
+                        case "dirn":
                             director = tempVal.isEmpty() ? null : tempVal;
                             break;
                         case "cat":
@@ -164,8 +166,13 @@ public class MovieParser implements XMLParser {
             moviePstmt.setString(2, title);
             moviePstmt.setInt(3, year);
             moviePstmt.setString(4, director);
-//            System.out.println("Inserted Movie - ID: " + id + ", Title: " + title + ", Year: " + year + ", Director: " + director);
             moviePstmt.executeUpdate();
+
+            // Insert default rating entry for the new movie
+            ratingsPstmt.setString(1, id);
+            ratingsPstmt.executeUpdate();
+
+//            System.out.println("Inserted Movie - ID: " + id + ", Title: " + title + ", Year: " + year + ", Director: " + director);
         } catch (SQLException e) {
             logError("Error inserting movie: " + title + " - " + e.getMessage());
         }
