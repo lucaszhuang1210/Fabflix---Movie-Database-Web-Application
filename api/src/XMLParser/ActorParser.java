@@ -74,7 +74,7 @@ public class ActorParser implements XMLParser {
                                 logError("Missing name for actor with dob: " + dob);
                             } else if (!uniqueActors.contains(stagename)) {  // Check for duplicate
                                 Integer birthYear = dob != null ? Integer.parseInt(dob) : null;
-                                String id = generateNewID();  // Generate unique ID for actor
+                                String id = generateNewStarID();  // Generate unique ID for actor
                                 addStarToDatabase(id, stagename, birthYear);
                                 uniqueActors.add(stagename);  // Add to the set to track as inserted
                             } else {
@@ -127,7 +127,7 @@ public class ActorParser implements XMLParser {
         }
     }
 
-    private String generateNewID() {
+    private String generateNewStarID() {
         if (lastGeneratedID == null) {
             try (PreparedStatement stmt = conn.prepareStatement("SELECT MAX(id) AS max_id FROM stars");
                  ResultSet rs = stmt.executeQuery()) {

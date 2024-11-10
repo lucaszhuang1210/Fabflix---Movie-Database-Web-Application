@@ -164,7 +164,7 @@ public class MovieParser implements XMLParser {
             moviePstmt.setString(2, title);
             moviePstmt.setInt(3, year);
             moviePstmt.setString(4, director);
-            System.out.println("Inserted Movie - ID: " + id + ", Title: " + title + ", Year: " + year + ", Director: " + director);
+//            System.out.println("Inserted Movie - ID: " + id + ", Title: " + title + ", Year: " + year + ", Director: " + director);
             moviePstmt.executeUpdate();
         } catch (SQLException e) {
             logError("Error inserting movie: " + title + " - " + e.getMessage());
@@ -180,7 +180,7 @@ public class MovieParser implements XMLParser {
                 genrePstmt.setInt(1, newGenreID);
                 genrePstmt.setString(2, genreName);
                 genrePstmt.executeUpdate();
-                System.out.println("Inserted Genre - ID: " + newGenreID + ", Name: " + genreName);
+//                System.out.println("Inserted Genre - ID: " + newGenreID + ", Name: " + genreName);
 
                 genreCache.put(genreName, newGenreID);
                 currentMovieGenres.add(newGenreID);
