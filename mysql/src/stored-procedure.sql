@@ -23,6 +23,10 @@ BEGIN
     -- Insert the new movie
     INSERT INTO movies (id, title, year, director)
     VALUES (new_movie_id, movie_title, movie_year, movie_director);
+    
+    -- Add a default rating entry for the new movie with "N/A" rating (using NULL) and 0 votes
+    INSERT INTO ratings (movieId, rating, numVotes)
+    VALUES (new_movie_id, 0, 0);
 
     -- Check if the star exists, if not, add the star
     SELECT id INTO new_star_id
