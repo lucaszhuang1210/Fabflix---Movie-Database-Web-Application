@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!--DOCTYPE casts PUBLIC "-//DAML Project//DTD Play//EN"-->
+<!DOCTYPE CAST.DTD>
+
+<casts>
+<dirfilms><dirid>H</dirid><is>Hitchcock</is><castnote>Actors in Silent Hitchcock Films.</castnote>
+<filmc>
+<m><f>H1</f><t>Always Tell Your Wife</t><a>Seymour Hicks</a><p>Und</p><r>husband</r></m>
+<m><f>H1</f><t>Always Tell Your Wife</t><a>Ellaline Teriss</a><p>Und</p><r>wife</r></m></filmc>
+<filmc>
+<m><f>H2</f><t>Number Thirteen</t><a>Clare Greet</a><p>Und</p><r/></m>
+<m><f>H2</f><t>Number Thirteen</t><a>Ernest Thesiger</a><p>Und</p><r/></m></filmc>
+<filmc>
+<m><f>H3</f><t>Woman to Woman</t><a>Betty Compson</a><p>Und</p><r>dancer</r></m>
+<m><f>H3</f><t>Woman to Woman</t><a>Clive Brook</a><p>Und</p><r>soldier with amnesia</r></m>
+<m><f>H3</f><t>Woman to Woman</t><a>Josephine Earle</a><p>Und</p><r/></m>
+<m><f>H3</f><t>Woman to Woman</t><a>Marie Ault</a><p>Und</p><r/></m>
+<m><f>H3</f><t>Woman to Woman</t><a>M. Peter</a><p>Und</p><r/></m>
+<m><f>H3</f><t>Woman to Woman</t><a>Victor McLaglen</a><p>Und</p><r/></m></filmc>
+<filmc>
+<m><f>H4</f><t>The Passionate Adventure</t><a>Alice Joyce</a><p>Und</p><r/></m>
+<m><f>H4</f><t>The Passionate Adventure</t><a>Clive Brook</a><p>Und</p><r/></m>
+<m><f>H4</f><t>The Passionate Adventure</t><a>Lillian HallDavis</a><p>Und</p><r/></m>
+<m><f>H4</f><t>The Passionate Adventure</t><a>Marjorie Daw</a><p>Und</p><r/></m>
+<m><f>H4</f><t>The Passionate Adventure</t><a>Victor McLaglen</a><p>Und</p><r/></m>
+<m><f>H4</f><t>The Passionate Adventure</t><a>Mary Brough</a><p>Und</p><r/></m>
+<m><f>H4</f><t>The Passionate Adventure</t><a>John Hamilton</a><p>Und</p><r/></m>
+<m><f>H4</f><t>The Passionate Adventure</t><a>J.R. Tozer</a><p>Und</p><r/></m>
+<m><f>H4</f><t>The Blackguard</t><a>Walter Rilla</a><p>Und</p><r/></m></filmc>
+<filmc>
+<m><f>H5</f><t>The Blackguard</t><a>Bernard Goetzke</a><p>Und</p><r/></m>
+<m><f>H5</f><t>The Blackguard</t><a>Jane Movak</a><p>Und</p><r/></m>
+<m><f>H5</f><t>The Blackguard</t><a>Frank Stanmore</a><p>Und</p><r/></m></filmc>
+
+</dirfilms>
+</casts>
