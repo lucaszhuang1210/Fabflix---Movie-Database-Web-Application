@@ -89,14 +89,14 @@ public class ActorParser implements XMLParser {
             });
 
             conn.commit();  // Commit all changes after parsing is complete
-            System.out.println("All data committed to the database.");
-
+//            System.out.println("All data committed to the database.");
+//            System.out.println("Unique Actors Parsed:");
+//            uniqueActors.forEach(System.out::println);
         } catch (Exception e) {
             logError("Error parsing actor file: " + e.getMessage());
             e.printStackTrace();
             try {
                 conn.rollback();  // Rollback in case of an error
-                System.out.println("Transaction rolled back due to an error.");
             } catch (SQLException rollbackEx) {
                 logError("Error during rollback: " + rollbackEx.getMessage());
                 rollbackEx.printStackTrace();
@@ -120,7 +120,7 @@ public class ActorParser implements XMLParser {
             } else {
                 pstmt.setNull(3, java.sql.Types.INTEGER);
             }
-            System.out.println("Inserted Actor - ID: " + id + ", Name: " + name + ", Birth Year: " + (birthYear != null ? birthYear : "NULL"));
+//            System.out.println("Inserted Actor - ID: " + id + ", Name: " + name + ", Birth Year: " + (birthYear != null ? birthYear : "NULL"));
             pstmt.executeUpdate();
         } catch (SQLException e) {
             logError("Error inserting actor: " + name + " - " + e.getMessage());
