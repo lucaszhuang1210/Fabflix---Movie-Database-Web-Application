@@ -19,6 +19,11 @@ public class ParseXMLFileAndInsertToDatabase {
         actorParser.parse("/Users/lucaszhuang1210gmail.com/Documents/UCI/CS122B/2024-fall-cs-122b-microhard/stanford-movies/actors_test.xml");
     }
 
+
+
+
+
+
     private static void setupErrorLogFile(String errorFile) {
         // Create the logs directory if it does not exist
         File logsDir = new File("../logs");
