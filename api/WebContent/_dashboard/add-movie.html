@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Add a Star</title>
+  <title>Add a New Movie</title>
   <link rel="stylesheet" href="styles.css"> <!-- Link to external CSS file -->
 
   <!-- Bootstrap CSS for Navbar -->
@@ -39,29 +39,45 @@
 
 <!-- Main Content -->
 <div class="form-container">
-  <h1>Add a Star</h1>
-  <h2>New Star Details</h2>
-  <form id="add_star_form">
+  <h1>Add a New Movie</h1>
+  <h2>Movie Details</h2>
+  <form id="add_movie_form">
     <div class="form-group">
-      <label for="starName">Star Name</label>
-      <input type="text" id="starName" name="starName" placeholder="Enter star name" required>
+      <label for="title">Movie Title</label>
+      <input type="text" id="title" name="title" placeholder="Enter movie title" required>
     </div>
     <div class="form-group">
-      <label for="birthYear">Birth Year</label>
-      <input type="number" id="birthYear" name="birthYear" placeholder="Enter birth year">
+      <label for="year">Year</label>
+      <input type="number" id="year" name="year" placeholder="Enter release year" min="1900" required>
     </div>
-    <button type="submit" class="submit-btn">Submit</button>
+    <div class="form-group">
+      <label for="director">Director</label>
+      <input type="text" id="director" name="director" placeholder="Enter director's name" required>
+    </div>
+    <div class="form-group">
+      <label for="star_name">Star Name</label>
+      <input type="text" id="star_name" name="star_name" placeholder="Enter star's name" required>
+    </div>
+    <div class="form-group">
+      <label for="star_birth_year">Star Birth Year</label>
+      <input type="number" id="star_birth_year" name="star_birth_year" placeholder="Enter star's birth year">
+    </div>
+    <div class="form-group">
+      <label for="genre_name">Genre</label>
+      <input type="text" id="genre_name" name="genre_name" placeholder="Enter genre" required>
+    </div>
+    <button type="submit" class="submit-btn">Add Movie</button>
   </form>
+  <div id="add_movie_message"></div>
 </div>
 
 <!-- include jQuery -->
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<!-- Link to JavaScript file -->
-<script src="./add-a-star.js"></script>
+
+<script src="add-movie.js"></script>
 
 </body>
 </html>
-
 

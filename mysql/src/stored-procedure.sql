@@ -1,11 +1,7 @@
--- stored-procedure.sql
-
--- Drop the procedure if it already exists to avoid conflicts
 DROP PROCEDURE IF EXISTS add_movie;
 
 DELIMITER //
 
--- Create the stored procedure for adding a movie with a single star and genre
 CREATE PROCEDURE add_movie(
     IN movie_title VARCHAR(100),
     IN movie_year INT,
@@ -31,7 +27,8 @@ BEGIN
     -- Check if the star exists, if not, add the star
     SELECT id INTO new_star_id
     FROM stars
-    WHERE name = star_name AND (birthYear = star_birth_year OR star_birth_year IS NULL);
+    WHERE name = star_name AND (birthYear = star_birth_year OR star_birth_year IS NULL)
+    LIMIT 1; -- Ensure only one row is returned
 
     IF new_star_id IS NULL THEN
         -- Generate a new star ID
@@ -51,7 +48,8 @@ BEGIN
     -- Check if the genre exists, if not, add the genre
     SELECT id INTO genre_id
     FROM genres
-    WHERE name = genre_name;
+    WHERE name = genre_name
+    LIMIT 1; -- Ensure only one row is returned
 
     IF genre_id IS NULL THEN
         -- Insert the new genre
@@ -63,8 +61,9 @@ BEGIN
     INSERT INTO genres_in_movies (genreId, movieId)
     VALUES (genre_id, new_movie_id);
 
-    -- Confirmation message
-    SELECT CONCAT('Movie added successfully with ID: ', new_movie_id) AS confirmation_message;
+    -- Confirmation message with the generated IDs
+    SELECT new_movie_id AS movie_id, genre_id, new_star_id AS star_id;
 END //
 
 DELIMITER ;
+
