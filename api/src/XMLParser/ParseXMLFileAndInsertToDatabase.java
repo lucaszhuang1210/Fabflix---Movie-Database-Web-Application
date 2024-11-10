@@ -27,6 +27,7 @@ public class ParseXMLFileAndInsertToDatabase {
 //        String movieFilePath = baseDir + "/stanford-movies/movies_test.xml";
 //        String castFilePath = baseDir + "/stanford-movies/cast_test.xml";
 
+//        **************************Real CASES**************************
         String actorFilePath = baseDir + "/stanford-movies/actors63.xml";
         String movieFilePath = baseDir + "/stanford-movies/mains243.xml";
         String castFilePath = baseDir + "/stanford-movies/casts124.xml";
