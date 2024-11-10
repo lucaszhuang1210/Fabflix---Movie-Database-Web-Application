@@ -1,5 +1,7 @@
-
 # Created by https://www.gitignore.io/api/java,maven,eclipse,java-web,intellij
+
+### Mac OS ###
+.DS_Store
 
 ### Eclipse ###
 
@@ -14,12 +16,6 @@ local.properties
 .settings/
 .loadpath
 .recommenders
-*.iml
-.idea/
-target/
-.DS_Store
-/logs/
-
 
 # External tool builders
 .externalToolBuilders/
@@ -60,33 +56,18 @@ target/
 .worksheet
 
 ### Eclipse Patch ###
-# Eclipse Core		
+# Eclipse Core
 .project
 
-# JDT-specific (Eclipse Java Development Tools)		
+# JDT-specific (Eclipse Java Development Tools)
 .classpath
 
 ### Intellij ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
-# User-specific stuff:
-.idea/**/workspace.xml
-.idea/**/tasks.xml
-.idea/dictionaries
-
-# Sensitive or high-churn files:
-.idea/**/dataSources/
-.idea/**/dataSources.ids
-.idea/**/dataSources.xml
-.idea/**/dataSources.local.xml
-.idea/**/sqlDataSources.xml
-.idea/**/dynamic.xml
-.idea/**/uiDesigner.xml
-
-# Gradle:
-.idea/**/gradle.xml
-.idea/**/libraries
+.idea/
+*.iml
 
 # CMake
 cmake-build-debug/
@@ -174,5 +155,3 @@ buildNumber.properties
 
 
 # End of https://www.gitignore.io/api/java,maven,eclipse,java-web,intellij
-
-PasswordsEncryption/cs122b-project3-encryption-example-main/pom.xml

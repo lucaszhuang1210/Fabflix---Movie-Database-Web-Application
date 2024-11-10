@@ -18,14 +18,22 @@ public class ParseXMLFileAndInsertToDatabase {
         // Ensure the error log file and directory are set up, and clear its contents
         setupErrorLogFile(errorFile);
 
-        // Initialize and run the parsers
+        // Get the project base directory
+        String baseDir = new File(System.getProperty("user.dir")).getParentFile().getAbsolutePath();
+
+        // Construct relative paths from the base directory
+        String actorFilePath = baseDir + "/stanford-movies/actors63.xml";
+        String movieFilePath = baseDir + "/stanford-movies/mains243.xml";
+        String castFilePath = baseDir + "/stanford-movies/casts124.xml";
+
+        // Initialize and run the parsers with constructed paths
         ActorParser actorParser = new ActorParser(loginUser, loginPasswd, loginUrl, errorFile);
         MovieParser movieParser = new MovieParser(loginUser, loginPasswd, loginUrl, errorFile);
         CastParser castParser = new CastParser(loginUser, loginPasswd, loginUrl, errorFile);
 
-        actorParser.parse("/Users/lucaszhuang1210gmail.com/Documents/UCI/CS122B/2024-fall-cs-122b-microhard/stanford-movies/actors_test.xml");
-        movieParser.parse("/Users/lucaszhuang1210gmail.com/Documents/UCI/CS122B/2024-fall-cs-122b-microhard/stanford-movies/movies_test.xml");
-        castParser.parse("/Users/lucaszhuang1210gmail.com/Documents/UCI/CS122B/2024-fall-cs-122b-microhard/stanford-movies/cast_test.xml");
+        actorParser.parse(actorFilePath);
+        movieParser.parse(movieFilePath);
+        castParser.parse(castFilePath);
 
         // Calculate and print the elapsed time
         long endTime = System.currentTimeMillis();
