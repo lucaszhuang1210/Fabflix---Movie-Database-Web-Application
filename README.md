@@ -13,15 +13,13 @@
 
 ## Project Overview
 
-This project is a **web-based application** deployed on **AWS**, leveraging a range of modern technologies to achieve scalability, security, and efficient data handling. Built with **Java** for backend processing and **JavaScript** for creating interactive frontend features, the application is hosted on an **Apache Tomcat** server. **Maven** manages dependencies and builds, while a **MySQL database** provides structured data storage, ensuring the application’s data management is both efficient and reliable.
+This project is a **scalable web-based application** deployed on **AWS**, engineered for secure, high-performance data processing utilizing advanced technologies. The application is developed in **Java** for backend logic and **JavaScript** for dynamic frontend functionality, hosted on an **Apache Tomcat** server. **Maven** manages dependencies, while a **MySQL database** ensures reliable structured data storage.
 
-The application includes robust functionality for processing large datasets, such as **XML parsers** (ActorParser, MovieParser, CastParser) designed to handle complex data extraction and insertion processes. These parsers are optimized with in-memory caching and ID generation, reducing redundant database queries and improving performance. Additionally, **AWS** cloud services enable the application to scale seamlessly, maintaining accessibility and reliability under various loads.
+Optimized **XML parsers** (ActorParser, MovieParser, CastParser) efficiently handle large datasets, using in-memory caching and auto-ID generation to reduce database queries and enhance processing speed. **AWS cloud services** provide scalability and dependable access.
 
-Security is a priority in this project, with multiple layers of protection implemented. The application uses **reCAPTCHA** to prevent bot access, **encrypted password storage** to safeguard user credentials in the database, and **HTTPS** to secure communication between the client and server, ensuring that sensitive data is transmitted safely.
+Security is prioritized through **reCAPTCHA** to prevent automated access, **encrypted password storage** for secure credential management, and **HTTPS** to protect data transmission.
 
-An **Employee Dashboard** adds role-specific functionality for internal management. Implemented using stored procedures, the dashboard offers key features like **Metadata Display** to view database structure, **Star Insertion** to add new actors, **Movie Insertion** for adding movie entries efficiently, and an **Employee-Only Filter Page** that restricts access to sensitive data and operations for authorized personnel only.
-
-This full-stack application combines frontend, backend, and database layers into a cohesive and interactive platform, delivering a secure, dynamic, and efficient environment for data handling and user engagement. With AWS-hosted scalability and secure access via HTTPS, this project showcases a complete, integrated approach to modern web application development.
+An **Employee Dashboard** delivers robust internal tools via stored procedures, enabling metadata display, star and movie insertion, and restricted-access filtering for authorized personnel. This full-stack application integrates frontend, backend, and database components, creating a secure, efficient, and highly interactive platform for data management and user engagement.
 
 ---
 
