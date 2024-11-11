@@ -30,6 +30,8 @@ We collaborated on debugging and use PreparedStatement.
 
 - **Lucas:** Developed and optimized XML parsers (`ActorParser`, `MovieParser`, `CastParser`, `ParseXMLFileAndInsertToDatabase`) with in-memory caching and ID generation, documented an optimization report, and deployed the application on AWS with HTTPS.
 - **Betty:** Adding reCAPTCHA, Use Encrypted Password, Implementing an Employee Dashboard using Stored Procedure with function： 1. metadata display 2. insert a star 3. inserting a movie.
+
+[Inconsistency Data Report](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-microhard/blob/main/inconsistency_entries.txt) 
   
 ## List filenames with Prepared Statements
 - ActorParser.java
