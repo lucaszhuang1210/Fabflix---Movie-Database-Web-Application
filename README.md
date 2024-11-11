@@ -28,20 +28,20 @@ We collaborated on debugging and use PreparedStatement.
 - **Lucas:** Adding HTTPS, Importing large XML data files into the Fabflix database.
 - **Betty:** Adding reCAPTCHA, Use Encrypted Password, Implementing an Employee Dashboard using Stored Procedure with function： 1. metadata display 2. insert a star 3. inserting a movie.
   
-List filenames with Prepared Statements:
-ActorParser.java
-CastParser.java
-MovieParser.java
-AddMovieServlet.java
-AddStarServlet.java
-EmployeeLoginServlet.java
-GenreServlet.java
-LoginServlet.java
-MetadataServlet.java
-MovieListServlet.java
-PaymentServlet.java
-SingleMovieServlet.java
-SingleStarServlet.java
+## List filenames with Prepared Statements
+- ActorParser.java
+- CastParser.java
+- MovieParser.java
+- AddMovieServlet.java
+- AddStarServlet.java
+- EmployeeLoginServlet.java
+- GenreServlet.java
+- LoginServlet.java
+- MetadataServlet.java
+- MovieListServlet.java
+- PaymentServlet.java
+- SingleMovieServlet.java
+- SingleStarServlet.java
 
 ---
 
@@ -62,20 +62,43 @@ Leveraging AWS cloud services, the application is designed to be both scalable a
 
 ### Backend:
 - **MovieListServlet.java**: A Java servlet that interacts with the database to retrieve a list of movies. It responds with movie data in **JSON format**. Movie names are generated as links to the **Single Movie** page, and star names link to the **Single Star** page.
-  
 - **SingleStarServlet.java**: Retrieves information about a specific star and all movies the star has acted in, returning the results in **JSON format**.
 
 - **SingleMovieServlet.java**: Retrieves information about a specific movie, including its stars and genres, and returns this data in **JSON format**.
   
-- LoginFilter.java: A Java servlet filter that intercepts all incoming requests, allowing access to certain URLs without login while redirecting unauthorized users to the login page if they are not logged in.
+- **LoginFilter.java**: A Java servlet filter that intercepts all incoming requests, allowing access to certain URLs without login while redirecting unauthorized users to the login page if they are not logged in.
 
-- LoginServlet.java: A Java servlet that handles user login by verifying credentials against the database. It responds with a JSON object indicating success or failure and manages session creation upon successful login.
+- **LoginServlet.java**: A Java servlet that handles user login by verifying credentials against the database. It responds with a JSON object indicating success or failure and manages session creation upon successful login.
 
-- PaymentServlet.java: A Java servlet that processes payment transactions by validating credit card details against the database. If valid, it proceeds to handle sales transactions, responding with JSON indicating the success or failure of the payment.
+- **PaymentServlet.java**: A Java servlet that processes payment transactions by validating credit card details against the database. If valid, it proceeds to handle sales transactions, responding with JSON indicating the success or failure of the payment.
 
-- SessionServlet.java: A Java servlet for managing user session state by storing and retrieving search filters and pagination settings. It saves session data via POST requests and loads it via GET requests, responding with JSON format.
+- **SessionServlet.java**: A Java servlet for managing user session state by storing and retrieving search filters and pagination settings. It saves session data via POST requests and loads it via GET requests, responding with JSON format.
 
-- User.java: A simple Java class representing a user with a username field. It can be extended to include additional attributes like shopping cart items.
+- **User.java**: A simple Java class representing a user with a username field. It can be extended to include additional attributes like shopping cart items.
+
+- **AddMovieServlet.java**: A servlet that handles the addition of a new movie to the database by checking for duplicates, calling a stored procedure to insert data, and returning success or error messages in JSON format.
+  
+- **AddStarServlet.java**: A servlet that adds a new star to the database by generating a unique ID, inserting the star’s name and optional birth year, and returning a JSON response indicating success or error.
+  
+- **EmployeeLoginServlet.java**: A servlet handling employee login by validating credentials against encrypted passwords in the database, verifying reCAPTCHA, and returning a JSON response with success or failure status.
+
+- **GenreServlet.java**: A servlet that retrieves all genres from the database, returning the list as a JSON array sorted by name for use in the application.
+  
+- **RecaptchaConstants.java**: A class that stores the secret key for Google reCAPTCHA verification, used to validate user interactions on protected pages.
+  
+- **RecaptchaVerifyUtils.java**: A utility class that verifies Google reCAPTCHA responses by sending a POST request to the reCAPTCHA API and parsing the JSON response to confirm successful validation.
+
+**Under XMLParser folder**:
+
+- **ActorParser.java**: An XML parser for reading actor data, validating uniqueness, handling errors, and inserting actors into the database with a unique ID, using SAX parsing and batch commits for efficiency.
+
+- **CastParser.java**: An XML parser that processes cast data by linking actors to movies, checking for duplicates, handling missing entries, and managing batch inserts to the database for optimized performance.
+
+- **MovieParser.java**: An XML parser that processes movie data, including title, director, year, and genres, and inserts movies and genre associations into the database, handling errors and avoiding duplicate entries with cache checks.
+
+- **ParseXMLFileAndInsertToDatabase.java**: A program that initializes and runs XML parsers for actors, movies, and cast data, inserting the parsed data into a database and logging any inconsistencies to a specified error file.
+
+- **XMLParser.java**: An interface that defines a `parse` method for parsing XML files, to be implemented by classes that handle specific XML data structures.
 
 
 ### Frontend:
@@ -91,21 +114,43 @@ Leveraging AWS cloud services, the application is designed to be both scalable a
 
 - **single-movie.js**: JavaScript file that sends an HTTP GET request to `SingleMovieServlet` and populates the table with star and genre information of a movie.
 
-- Add-to-cart.js: A JavaScript file that manages the shopping cart functionality. Persist the cart data across sessions, handles adding movies to the cart with a random price, and updates the cart when the "Add to Cart" button is clicked.
+- **Add-to-cart.js**: A JavaScript file that manages the shopping cart functionality. It persists the cart data across sessions, handles adding movies to the cart with a random price, and updates the cart when the "Add to Cart" button is clicked.
 
-- confirmation.html: A purchase confirmation page that displays order details using data from localStorage. It includes movie information, total price, and navigation buttons to the homepage and login page.
+- **confirmation.html**: A purchase confirmation page that displays order details using data from localStorage. It includes movie information, total price, and navigation buttons to the homepage and login page.
 
-- login.html: A login page with a centered form, featuring a gradient background, where users enter credentials validated through login.js.
+- **login.html**: A login page with a centered form, featuring a gradient background, where users enter credentials validated through `login.js`.
 
-- login.js: A JavaScript file that handles user login by submitting credentials via a POST request to LoginServlet, validating the response, and redirecting to the homepage on success or displaying error messages on failure.
+- **login.js**: A JavaScript file that handles user login by submitting credentials via a POST request to `LoginServlet`, validating the response, and redirecting to the homepage on success or displaying error messages on failure.
 
-- payment.html: A payment page featuring a form for entering credit card details, displaying the total cost, with navigation links for home, shopping cart, and logout actions, styled using Bootstrap and FontAwesome.
+- **payment.html**: A payment page featuring a form for entering credit card details, displaying the total cost, with navigation links for home, shopping cart, and logout actions, styled using Bootstrap and FontAwesome.
 
-- payment.js: A JavaScript file that calculates the total cart price, collects payment details from a form, and sends the data to the backend for validation, redirecting to a confirmation page on success or displaying error messages on failure.
+- **payment.js**: A JavaScript file that calculates the total cart price, collects payment details from a form, and sends the data to the backend for validation, redirecting to a confirmation page on success or displaying error messages on failure.
 
-- shopping-cart.html: A shopping cart page displaying a list of selected movies with quantities, prices, and a total cost, allowing users to update the cart and proceed to payment, enhanced with Bootstrap and FontAwesome for styling and navigation.
+- **shopping-cart.html**: A shopping cart page displaying a list of selected movies with quantities, prices, and a total cost, allowing users to update the cart and proceed to payment, enhanced with Bootstrap and FontAwesome for styling and navigation.
 
-- shopping-cart.js: A JavaScript file that manages and displays the shopping cart, allowing users to adjust quantities, delete items, and view the total price, with actions saved in localStorage and an option to proceed to the payment page.
+- **shopping-cart.js**: A JavaScript file that manages and displays the shopping cart, allowing users to adjust quantities, delete items, and view the total price, with actions saved in localStorage and an option to proceed to the payment page.
+
+Under _dashboard folder:
+
+- **add-a-star.html**: A page with a form to add a new star's details, featuring a Bootstrap navbar, input fields for star name and birth year, and links to external CSS, Bootstrap, and FontAwesome for styling.
+
+- **add-a-star.js**: JavaScript file that handles form submission for adding a new star, sending data to the backend via an AJAX POST request, and providing feedback based on the response.
+  
+- **add-movie.html**: A page with a form to add a new movie, including fields for title, year, director, star, and genre, styled with Bootstrap and featuring a navbar for navigation.
+  
+- **add-movie.js**: JavaScript file that handles form submission for adding a new movie, sends data to the backend via an AJAX POST request, and displays success or error messages based on the response.
+  
+- **login.html**: A login page for employees with a soft green gradient background, a centered login form, Google reCAPTCHA for security, and JavaScript for form handling and error display.
+  
+- **login.js**: JavaScript file that handles employee login by submitting credentials and reCAPTCHA via AJAX to `LoginServlet`, displaying error messages on failure or redirecting to the metadata dashboard on success.
+
+- **metadata.html**: A dashboard displaying database metadata in table format with a Bootstrap-styled navbar, featuring sections for table attributes and types, populated dynamically via AJAX.
+
+- **metadata.js**: JavaScript file that fetches and displays database metadata in tables by making an AJAX GET request, updating the dashboard with attributes and data types or showing an error message on failure.
+
+- **styles.css**: CSS file providing a clean, professional style with a light background, centered headers, styled tables and forms, and a responsive layout for the database metadata dashboard and other pages.
+
+
 
 ---
 
