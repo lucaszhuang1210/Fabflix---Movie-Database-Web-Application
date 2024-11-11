@@ -6,12 +6,31 @@
 
 ---
 
+## Video Explanation
+[Watch the video on YouTube](https://www.youtube.com/@lucaszhuang1478)  
+
+---
+
+## Project Overview
+
+This project is a **web-based application** deployed on **AWS**, leveraging a range of modern technologies to achieve scalability, security, and efficient data handling. Built with **Java** for backend processing and **JavaScript** for creating interactive frontend features, the application is hosted on an **Apache Tomcat** server. **Maven** manages dependencies and builds, while a **MySQL database** provides structured data storage, ensuring the application’s data management is both efficient and reliable.
+
+The application includes robust functionality for processing large datasets, such as **XML parsers** (ActorParser, MovieParser, CastParser) designed to handle complex data extraction and insertion processes. These parsers are optimized with in-memory caching and ID generation, reducing redundant database queries and improving performance. Additionally, **AWS** cloud services enable the application to scale seamlessly, maintaining accessibility and reliability under various loads.
+
+Security is a priority in this project, with multiple layers of protection implemented. The application uses **reCAPTCHA** to prevent bot access, **encrypted password storage** to safeguard user credentials in the database, and **HTTPS** to secure communication between the client and server, ensuring that sensitive data is transmitted safely.
+
+An **Employee Dashboard** adds role-specific functionality for internal management. Implemented using stored procedures, the dashboard offers key features like **Metadata Display** to view database structure, **Star Insertion** to add new actors, **Movie Insertion** for adding movie entries efficiently, and an **Employee-Only Filter Page** that restricts access to sensitive data and operations for authorized personnel only.
+
+This full-stack application combines frontend, backend, and database layers into a cohesive and interactive platform, delivering a secure, dynamic, and efficient environment for data handling and user engagement. With AWS-hosted scalability and secure access via HTTPS, this project showcases a complete, integrated approach to modern web application development.
+
+---
+
 # Team Contributions
 ## project 3:
 We collaborated on debugging and use PreparedStatement.
 ### Specific Contributions:
 
-- **Lucas:** Adding HTTPS, Importing large XML data files into the Fabflix database.
+- **Lucas:** Developed and optimized XML parsers (`ActorParser`, `MovieParser`, `CastParser`, `ParseXMLFileAndInsertToDatabase`) with in-memory caching and ID generation, documented an optimization report, and deployed the application on AWS with HTTPS.
 - **Betty:** Adding reCAPTCHA, Use Encrypted Password, Implementing an Employee Dashboard using Stored Procedure with function： 1. metadata display 2. insert a star 3. inserting a movie.
   
 ## List filenames with Prepared Statements
@@ -33,7 +52,7 @@ We collaborated on debugging and use PreparedStatement.
 We collaborated on designing the software architecture.
 ### Specific Contributions:
 
-- **Lucas:** Implement the Search and Browse on the Main Page.
+- **Lucas:** Implement the **Search and Browse** feature on the Main Page, allowing users to Navigate seamlessly between Genres and Characters, Filter results using both search and browse options, with **Dynamic content updates** as filters are applied, giving users immediate feedback.
 - **Betty:** Implement the Shopping Cart, Login Page.
 
 ## project 1:
@@ -42,19 +61,6 @@ We collaborated on setting up the environment (Tasks 1-5).
 
 - **Lucas:** Debugged and updated the Single Movie page, wrote the `README.md`, created the `moviedb` database, set up AWS, and recorded video demonstrations.
 - **Betty:** Implement Movie List Page (`MovieListServlet`, `index.html`, and `index.js`), Single Stars Page (`SingleStarServlet`, `single-star.html`, and `single-star.js`), Single Movie (`SingleMovieServlet`, `single-movie.html`, and `single-movie.js`) Page, created the `style.css`, fixed Maven packages setup, and assisted with AWS instance setup.
-
----
-
-## Video Explanation
-[Watch the video on YouTube](https://www.youtube.com/@lucaszhuang1478)  
-
----
-
-## Project Overview
-
-This project is a **web-based application** deployed on **AWS**, utilizing a range of modern technologies. The application is developed using **Java** and **JavaScript**, with the backend hosted on an **Apache Tomcat** server. It employs **Maven** for dependency management and builds, while the **MySQL database** handles data storage. 
-
-Leveraging AWS cloud services, the application is designed to be both scalable and accessible. It provides a robust platform for efficient data handling and dynamic user interactions, showcasing a full-stack architecture that integrates frontend, backend, and database layers.
 
 ---
 
@@ -88,7 +94,7 @@ Leveraging AWS cloud services, the application is designed to be both scalable a
   
 - **RecaptchaVerifyUtils.java**: A utility class that verifies Google reCAPTCHA responses by sending a POST request to the reCAPTCHA API and parsing the JSON response to confirm successful validation.
 
-**Under XMLParser folder**:
+**Under XMLParser package**:
 
 - **ActorParser.java**: An XML parser for reading actor data, validating uniqueness, handling errors, and inserting actors into the database with a unique ID, using SAX parsing and batch commits for efficiency.
 
