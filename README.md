@@ -22,11 +22,26 @@ We collaborated on designing the software architecture.
 - **Betty:** Implement the Shopping Cart, Login Page.
 
 ## project 3:
-We collaborates...
+We collaborated on debugging and use PreparedStatement.
 ### Specific Contributions:
 
-- **Lucas:** 
-- **Betty:** Adding reCAPTCHA, 
+- **Lucas:** Adding HTTPS, Importing large XML data files into the Fabflix database.
+- **Betty:** Adding reCAPTCHA, Use Encrypted Password, Implementing an Employee Dashboard using Stored Procedure with function： 1. metadata display 2. insert a star 3. inserting a movie.
+  
+List filenames with Prepared Statements:
+ActorParser.java
+CastParser.java
+MovieParser.java
+AddMovieServlet.java
+AddStarServlet.java
+EmployeeLoginServlet.java
+GenreServlet.java
+LoginServlet.java
+MetadataServlet.java
+MovieListServlet.java
+PaymentServlet.java
+SingleMovieServlet.java
+SingleStarServlet.java
 
 ---
 
