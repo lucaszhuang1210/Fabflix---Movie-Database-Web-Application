@@ -12,8 +12,11 @@ CREATE TABLE movies (
     id VARCHAR(10) PRIMARY KEY NOT NULL,
     title VARCHAR(100) NOT NULL,
     year INTEGER NOT NULL,
-    director VARCHAR(100) NOT NULL
+    director VARCHAR(100) NOT NULL,
+    FULLTEXT idx (title)
 );
+
+ALTER TABLE movies ADD FULLTEXT(title);
 
 -- Create the 'stars' table
 CREATE TABLE stars (
