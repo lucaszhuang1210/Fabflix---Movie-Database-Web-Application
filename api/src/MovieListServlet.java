@@ -35,7 +35,7 @@ public class MovieListServlet extends HttpServlet {
      * Handles GET requests for movie list.
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
+        System.out.println("MovieListServlet: doGet method is being called.");
         response.setContentType("application/json"); // Response MIME type
 
         PrintWriter out = response.getWriter();
@@ -133,9 +133,18 @@ public class MovieListServlet extends HttpServlet {
                 paramList.add(genre);
             }
             if (title != null && !title.trim().isEmpty()) {
-                // Use "contains" condition for user input search
-                whereClause.append((whereClause.length() == 0 ? "WHERE " : " AND ") + "m.title LIKE ?");
-                paramList.add("%" + title + "%");
+                // Tokenize the title into multiple words
+                String[] tokens = title.trim().split("\\s+");
+                StringBuilder fullTextSearch = new StringBuilder();
+                for (String token : tokens) {
+                    fullTextSearch.append("+").append(token).append("* ");
+                }
+                System.out.println("Generated Full-Text Query: " + fullTextSearch.toString().trim());
+
+                String searchQuery = fullTextSearch.toString().trim();
+                whereClause.append((whereClause.length() == 0 ? "WHERE " : " AND "))
+                        .append("MATCH(m.title) AGAINST(? IN BOOLEAN MODE) ");
+                paramList.add(searchQuery);
             }
             if (year != null && !year.trim().isEmpty()) {
                 whereClause.append((whereClause.length() == 0 ? "WHERE " : " AND ") + "m.year = ?");

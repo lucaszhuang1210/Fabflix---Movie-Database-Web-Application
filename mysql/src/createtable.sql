@@ -16,7 +16,8 @@ CREATE TABLE movies (
     FULLTEXT idx (title)
 );
 
-ALTER TABLE movies ADD FULLTEXT(title);
+-- use below line to add full-text indexing without re-creating the table
+-- ALTER TABLE movies ADD FULLTEXT(title); 
 
 -- Create the 'stars' table
 CREATE TABLE stars (
