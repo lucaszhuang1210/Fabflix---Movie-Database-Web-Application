@@ -29,9 +29,15 @@ public class LoginFilter implements Filter {
             return;
         }
 
+        //String url = httpRequest.getContextPath();
+        String url = httpRequest.getRequestURI();
+        if(httpRequest.getSession().getAttribute("employee") == null && (url.contains("/_dashboard"))){
+            httpResponse.sendRedirect(httpRequest.getContextPath() + "/_dashboard/login.html");
+        }
+
         // Redirect to login page if the "user" attribute doesn't exist in session
-        if (httpRequest.getSession().getAttribute("user") == null) {
-            httpResponse.sendRedirect("login.html");
+        else if (httpRequest.getSession().getAttribute("user") == null && !(url.contains("/_dashboard"))) {
+            httpResponse.sendRedirect(httpRequest.getContextPath() + "/login.html");
         } else {
             chain.doFilter(request, response);
         }
@@ -51,6 +57,14 @@ public class LoginFilter implements Filter {
         allowedURIs.add("login.html");
         allowedURIs.add("login.js");
         allowedURIs.add("api/login");
+        allowedURIs.add("/api/_dashboard-login");
+
+        allowedURIs.add("/styles.css");
+        allowedURIs.add("/api/metadata");
+        allowedURIs.add("/api/add-movie");
+        allowedURIs.add("/api/add-a-star");
+
+        allowedURIs.add("/_dashboard/styles.css");
     }
 
     public void destroy() {

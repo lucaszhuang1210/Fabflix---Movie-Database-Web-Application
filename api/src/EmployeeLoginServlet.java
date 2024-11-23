@@ -78,7 +78,7 @@ public class EmployeeLoginServlet extends HttpServlet {
                 boolean success = new StrongPasswordEncryptor().checkPassword(employee_password, encryptedPassword);
                 if(success){
                     // set this user into the session
-                    request.getSession().setAttribute("user", new User(employee_username));
+                    request.getSession().setAttribute("employee", new Employee(employee_username));
                     responseJsonObject.addProperty("status", "success");
                     responseJsonObject.addProperty("message", "success");
                 }else {
@@ -91,7 +91,7 @@ public class EmployeeLoginServlet extends HttpServlet {
                 responseJsonObject.addProperty("status", "fail");
                 // Log to localhost log
                 request.getServletContext().log("Login failed");
-                responseJsonObject.addProperty("message", "user " + employee_username + " does not exist");
+                responseJsonObject.addProperty("message", "employee " + employee_username + " does not exist");
 
             }
             out.write(responseJsonObject.toString());
