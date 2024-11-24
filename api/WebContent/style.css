@@ -1,0 +1,35 @@
+/* General container for suggestions */
+.autocomplete-suggestions {
+    border: 1px solid #ccc;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: auto;
+    max-height: 250px;
+    position: absolute;
+    z-index: 1000;
+    width: 100%; /* Matches the width of the input */
+}
+
+/* Each suggestion item */
+.autocomplete-suggestion {
+    padding: 10px 15px;
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+/* Hover effect for suggestion items */
+.autocomplete-suggestion:hover {
+    background: #f0f8ff;
+    color: #0078d7; /* A subtle blue color for hover */
+}
+
+/* Selected suggestion (e.g., when navigating with keyboard) */
+.autocomplete-selected {
+    background: #0078d7;
+    color: #fff;
+}
+
+/* Grouping suggestions (if

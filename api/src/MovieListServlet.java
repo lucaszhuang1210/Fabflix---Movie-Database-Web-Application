@@ -139,7 +139,7 @@ public class MovieListServlet extends HttpServlet {
                 for (String token : tokens) {
                     fullTextSearch.append("+").append(token).append("* ");
                 }
-                System.out.println("Generated Full-Text Query: " + fullTextSearch.toString().trim());
+//                System.out.println("Generated Full-Text Query: " + fullTextSearch.toString().trim());
 
                 String searchQuery = fullTextSearch.toString().trim();
                 whereClause.append((whereClause.length() == 0 ? "WHERE " : " AND "))
