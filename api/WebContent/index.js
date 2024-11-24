@@ -14,8 +14,7 @@ let numRecordsPerPage = 10; // Default number of records per page
 
 // Global variables to store the user's search and sorting choices
 let currentSortOption = 'rating_desc'; // Default sorting option
-let currentSearchCriteria = {
-        title: '',
+window.currentSearchCriteria = {
         year: '',
         director: '',
         star: '',
@@ -110,7 +109,7 @@ function handleMovieListResult(resultData) {
         saveSessionState(); // Save the new state in the session
         fetchMovies(); // Fetch updated movie list based on the selected genre
     });
-    
+
     // Create pagination controls
     createPaginationControls(currentPage, totalPages);
 }
@@ -368,3 +367,48 @@ jQuery("#numRecordsSelect").change(function () {
     saveSessionState();
     fetchMovies(); // Fetch data based on the new records per page setting
 });
+
+// Auto-Complete Auto-Complete Auto-Complete Auto-Complete Auto-Complete Auto-Complete
+$('#title').autocomplete({
+    lookup: function (query, doneCallback) {
+        handleLookup(query, doneCallback);
+    },
+    onSelect: function (suggestion) {
+        handleSelectSuggestion(suggestion);
+    },
+    deferRequestBy: 300, // Delay in milliseconds
+    minChars: 3, // Minimum characters before triggering the request
+});
+
+// Handle lookup request
+function handleLookup(query, doneCallback) {
+    console.log("autocomplete initiated")
+    console.log("sending AJAX request to backend Java Servlet")
+
+    $.ajax({
+        method: "GET",
+        url: "autocomplete",
+        data: { title: query }, // Pass the query as "title"
+        success: function (data) {
+            handleLookupAjaxSuccess(data, query, doneCallback);
+        },
+        error: function (errorData) {
+            console.log("lookup ajax error")
+            console.log(errorData)
+        }
+    });
+}
+
+// Handle successful lookup response
+function handleLookupAjaxSuccess(data, query, doneCallback) {
+    console.log("lookup ajax successful");
+    console.log(data); // Log the response array
+    doneCallback({ suggestions: data }); // Pass the response directly to the autocomplete library
+}
+
+// Handle suggestion selection
+function handleSelectSuggestion(suggestion) {
+    console.log("You selected " + suggestion["value"] + " with ID " + suggestion["data"]["movieID"]);
+    // Redirect to movie details page
+    window.location.href = "/api_war/single-movie.html?id=" + suggestion["data"]["movieID"];
+}

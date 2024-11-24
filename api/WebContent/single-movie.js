@@ -24,7 +24,6 @@ function getParameterByName(target) {
  * @param resultData jsonObject
  */
 function handleResult(resultData) {
-
     console.log("handleResult: populating movie info from resultData");
 
     // Check if resultData is not empty
@@ -36,21 +35,35 @@ function handleResult(resultData) {
         movieInfoElement.append("<p>Movie Title: " + resultData[0]["movie_title"] + "</p>" +
             "<p>Release Year: " + resultData[0]["movie_year"] + "</p>" +
             "<p>Director: " + resultData[0]["movie_director"] + "</p>" +
-            "<p>Rating: " + (resultData[0]["movie_rating"] || "N/A") + "</p>"+
-            // Add the "Add to Cart" button with a unique ID for the movie
+            "<p>Rating: " + (resultData[0]["movie_rating"] || "N/A") + "</p>" +
             `<button class='btn btn-success add-to-cart-btn' data-movie-id='${resultData[0]["movie_id"]}' 
             data-movie-title='${resultData[0]["movie_title"]}'>Add to Cart</button>`);
 
-        // Handle Genres
+        // Handle Genres as Hyperlinks
         console.log("handleResult: populating genres from resultData");
         let genres = resultData[0]["movie_genres"].split(", ");
         let genreTableBody = jQuery("#movie_genres_table_body");
         genreTableBody.empty(); // Clear previous data if any
         genres.forEach(genre => {
-            //TODO：记得TASK3 要求： each genre each hyperlinked, as equivalent to browsing by this genre.
-            //let rowHTML = "<tr><td><a href='movie-list.html?genre=" + genre + "'>" + genre + "</a></td></tr>";
-            let rowHTML = "<tr><th>" + genre + "</th></tr>";
+            // Create a hyperlink for each genre
+            let rowHTML = `<tr><td><a href="#" class="genre-link" data-genre="${genre}">${genre}</a></td></tr>`;
             genreTableBody.append(rowHTML);
+        });
+
+        // Bind click events to genre links
+        jQuery(".genre-link").off("click").on("click", function(event) {
+            event.preventDefault();
+            let genre = jQuery(this).data("genre");
+
+            // Update the genre in the search criteria and reset to the first page
+            window.currentSearchCriteria.genre = genre;
+            currentPage = 1;
+
+            // Save the updated state in the session
+            saveSessionState();
+
+            // Redirect to the main movie list page
+            window.location.href = "index.html";
         });
 
         // Handle Stars
@@ -67,7 +80,6 @@ function handleResult(resultData) {
         console.log("No movie data available");
     }
 }
-
 /**
  * Once this .js is loaded, the following scripts will be executed by the browser
  */
