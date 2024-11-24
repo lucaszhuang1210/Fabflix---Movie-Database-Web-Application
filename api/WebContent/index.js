@@ -11,6 +11,7 @@
 // Global variables to store pagination, sorting, and search-related information
 let currentPage = 1;
 let numRecordsPerPage = 10; // Default number of records per page
+let autocompleteCache = {};
 
 // Global variables to store the user's search and sorting choices
 let currentSortOption = 'rating_desc'; // Default sorting option
@@ -383,6 +384,14 @@ $('#title').autocomplete({
 // Handle lookup request
 function handleLookup(query, doneCallback) {
     console.log("autocomplete initiated")
+
+    if (autocompleteCache[query]) {
+        console.log("Using cached results for query:", query);
+        // Use cached results
+        doneCallback({ suggestions: autocompleteCache[query] });
+        return;
+    }
+
     console.log("sending AJAX request to backend Java Servlet")
 
     $.ajax({
@@ -390,6 +399,7 @@ function handleLookup(query, doneCallback) {
         url: "autocomplete",
         data: { title: query }, // Pass the query as "title"
         success: function (data) {
+            autocompleteCache[query] = data;
             handleLookupAjaxSuccess(data, query, doneCallback);
         },
         error: function (errorData) {
