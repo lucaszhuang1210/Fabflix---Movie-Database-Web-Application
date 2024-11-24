@@ -24,6 +24,63 @@ An **Employee Dashboard** delivers robust internal tools via stored procedures, 
 ---
 
 # Team Contributions
+## project 4:
+We collaborated on ...
+
+### Specific Contributions:
+
+- **Lucas:**
+- **Betty:** 
+
+- # Connection Pooling
+    - #### Include the filename/path of all code/configuration files in GitHub of using JDBC Connection Pooling.
+- ActorParser.java
+- CastParser.java
+- MovieParser.java
+- AddMovieServlet.java
+- AddStarServlet.java
+- EmployeeLoginServlet.java
+- GenreServlet.java
+- LoginServlet.java
+- MetadataServlet.java
+- MovieListServlet.java
+- PaymentServlet.java
+- SingleMovieServlet.java
+- SingleStarServlet.java
+- TitleAutoComplete.java
+- ParseXMLFileAndInsertToDatabase.java
+  
+    - #### Explain how Connection Pooling is utilized in the Fabflix code.
+- In Fabflix, connection pooling is leveraged to optimize database access efficiency and scalability. When a servlet or any Java class responsible for database operations is invoked, it does not create a new database connection outright. Instead, it requests a connection from the pool, which is an instance of javax.sql.DataSource managed by Tomcat's connection pool. This pool is defined in the context.xml file with parameters like maxTotal, maxIdle, maxWaitMillis, ensuring that the system can handle multiple simultaneous database requests without latency or overhead of establishing new connections. The servlet uses this connection to execute SQL commands and then returns it to the pool when the operations are complete, thus making it available for subsequent requests.
+  
+    - #### Explain how Connection Pooling works with two backend SQL.
+- When Fabflix is configured to operate with two backend SQL servers—typically a master and a slave—the connection pool must intelligently manage how connections are routed to support efficient read-write operations:
+1. Read Operations: These are usually routed to the slave server to distribute the load and optimize the read performance. Connection pools can be separately configured for each server, but read connections will predominantly pull from the slave's pool.
+2. Write Operations: All write operations (INSERT, UPDATE, DELETE) are directed exclusively to the master server to maintain data integrity and consistency. The master server's connection pool manages these connections.
+
+- # Master/Slave
+    - #### Include the filename/path of all code/configuration files in GitHub of routing queries to Master/Slave SQL.
+- ActorParser.java
+- CastParser.java
+- MovieParser.java
+- AddMovieServlet.java
+- AddStarServlet.java
+- EmployeeLoginServlet.java
+- GenreServlet.java
+- LoginServlet.java
+- MetadataServlet.java
+- MovieListServlet.java
+- PaymentServlet.java
+- SingleMovieServlet.java
+- SingleStarServlet.java
+- TitleAutoComplete.java
+  
+    - #### How read/write requests were routed to Master/Slave SQL?
+In a master/slave setup:
+Read Requests: When a servlet executes a read operation, the routing logic (either within each servlet or a central database manager) determines that the operation is a read and directs the request to pull a connection from the slave database's connection pool.
+Write Requests: Similarly, write operations are identified by the routing logic, which then ensures that these requests fetch a connection from the master database's connection pool. This maintains the integrity and consistency of the database while allowing for efficient distribution of query processing between the two servers.
+The implementation of such a system requires meticulous design to ensure that the routing logic is efficient and failsafe, providing seamless redirection of requests based on their nature and maintaining overall system performance and reliability.
+  
 ## project 3:
 We collaborated on debugging and use PreparedStatement.
 ### Specific Contributions:
