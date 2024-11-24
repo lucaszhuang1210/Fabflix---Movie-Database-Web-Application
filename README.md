@@ -34,21 +34,21 @@ We collaborated on ...
 
 - # Connection Pooling
     - #### Include the filename/path of all code/configuration files in GitHub of using JDBC Connection Pooling.
-- ActorParser.java
-- CastParser.java
-- MovieParser.java
-- AddMovieServlet.java
-- AddStarServlet.java
-- EmployeeLoginServlet.java
-- GenreServlet.java
-- LoginServlet.java
-- MetadataServlet.java
-- MovieListServlet.java
-- PaymentServlet.java
-- SingleMovieServlet.java
-- SingleStarServlet.java
-- TitleAutoComplete.java
-- ParseXMLFileAndInsertToDatabase.java
+        - ActorParser.java | /api/src/  | Servlets
+        - CastParser.java | /api/src/  | Servlets
+        - MovieParser.java | /api/src/  | Servlets
+        - AddMovieServlet.java | /api/src/  | Servlets
+        - AddStarServlet.java | /api/src/  | Servlets
+        - EmployeeLoginServlet.java | /api/src/  | Servlets
+        - GenreServlet.java | /api/src/  | Servlets
+        - LoginServlet.java | /api/src/  | Servlets
+        - MetadataServlet.java | /api/src/  | Servlets
+        - MovieListServlet.java | /api/src/  | Servlets
+        - PaymentServlet.java | /api/src/  | Servlets
+        - SingleMovieServlet.java | /api/src/  | Servlets
+        - SingleStarServlet.java | /api/src/  | Servlets
+        - TitleAutoComplete.java | /api/src/  | Servlets
+        - ParseXMLFileAndInsertToDatabase.java | api/src/XMLParser/ | Parsers
   
     - #### Explain how Connection Pooling is utilized in the Fabflix code.
 - In Fabflix, connection pooling is leveraged to optimize database access efficiency and scalability. When a servlet or any Java class responsible for database operations is invoked, it does not create a new database connection outright. Instead, it requests a connection from the pool, which is an instance of javax.sql.DataSource managed by Tomcat's connection pool. This pool is defined in the context.xml file with parameters like maxTotal, maxIdle, maxWaitMillis, ensuring that the system can handle multiple simultaneous database requests without latency or overhead of establishing new connections. The servlet uses this connection to execute SQL commands and then returns it to the pool when the operations are complete, thus making it available for subsequent requests.
@@ -60,20 +60,20 @@ We collaborated on ...
 
 - # Master/Slave
     - #### Include the filename/path of all code/configuration files in GitHub of routing queries to Master/Slave SQL.
-- ActorParser.java
-- CastParser.java
-- MovieParser.java
-- AddMovieServlet.java
-- AddStarServlet.java
-- EmployeeLoginServlet.java
-- GenreServlet.java
-- LoginServlet.java
-- MetadataServlet.java
-- MovieListServlet.java
-- PaymentServlet.java
-- SingleMovieServlet.java
-- SingleStarServlet.java
-- TitleAutoComplete.java
+        - ActorParser.java | /api/src/  | Servlets
+        - CastParser.java | /api/src/  | Servlets
+        - MovieParser.java | /api/src/  | Servlets
+        - AddMovieServlet.java | /api/src/  | Servlets
+        - AddStarServlet.java | /api/src/  | Servlets
+        - EmployeeLoginServlet.java | /api/src/  | Servlets
+        - GenreServlet.java | /api/src/  | Servlets
+        - LoginServlet.java | /api/src/  | Servlets
+        - MetadataServlet.java | /api/src/  | Servlets
+        - MovieListServlet.java | /api/src/  | Servlets
+        - PaymentServlet.java | /api/src/  | Servlets
+        - SingleMovieServlet.java | /api/src/  | Servlets
+        - SingleStarServlet.java | /api/src/  | Servlets
+        - TitleAutoComplete.java | /api/src/  | Servlets
   
     - #### How read/write requests were routed to Master/Slave SQL?
 In a master/slave setup:
