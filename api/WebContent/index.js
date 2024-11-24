@@ -28,7 +28,7 @@ window.currentSearchCriteria = {
  * @param resultData jsonObject
  */
 function handleMovieListResult(resultData) {
-    console.log("handleMovieListResult: populating movie table from resultData");
+    // console.log("handleMovieListResult: populating movie table from resultData");
 
     // Extract pagination information
     currentPage = resultData.currentPage;
@@ -387,6 +387,7 @@ function handleLookup(query, doneCallback) {
 
     if (autocompleteCache[query]) {
         console.log("Using cached results for query:", query);
+        console.log(autocompleteCache[query]);
         // Use cached results
         doneCallback({ suggestions: autocompleteCache[query] });
         return;
@@ -411,7 +412,7 @@ function handleLookup(query, doneCallback) {
 
 // Handle successful lookup response
 function handleLookupAjaxSuccess(data, query, doneCallback) {
-    console.log("lookup ajax successful");
+    // console.log("lookup ajax successful");
     console.log(data); // Log the response array
     doneCallback({ suggestions: data }); // Pass the response directly to the autocomplete library
 }
