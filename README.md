@@ -25,12 +25,12 @@ An **Employee Dashboard** delivers robust internal tools via stored procedures, 
 
 # Team Contributions
 ## project 4:
-We collaborated on ...
+We collaborated on debug
 
 ### Specific Contributions:
 
 - **Lucas:**
-- **Betty:** 
+- **Betty:** JDBC Connection Pooling, setting up MySQL Master-Slave Replication
 
 - # Connection Pooling
     - #### Include the filename/path of all code/configuration files in GitHub of using JDBC Connection Pooling.
