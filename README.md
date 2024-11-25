@@ -13,23 +13,23 @@
 
 ## Project Overview
 
-This project is a **scalable web-based application** deployed on **AWS**, engineered for secure, high-performance data processing utilizing advanced technologies. The application is developed in **Java** for backend logic and **JavaScript** for dynamic frontend functionality, hosted on an **Apache Tomcat** server. **Maven** manages dependencies, while a **MySQL database** ensures reliable structured data storage.
+This project is a **scalable web-based application** deployed on **AWS**, designed for secure, high-performance data processing and seamless user engagement. It is developed in **Java** for backend logic and **JavaScript** for dynamic frontend functionality, hosted on an **Apache Tomcat** server. **Maven** manages dependencies, while a **MySQL database** provides reliable structured data storage.
 
-Optimized **XML parsers** (ActorParser, MovieParser, CastParser) efficiently handle large datasets, using in-memory caching and auto-ID generation to reduce database queries and enhance processing speed. **AWS cloud services** provide scalability and dependable access.
+To ensure scalability and high availability, the application leverages **AWS Cloud Services**, including an **Elastic Load Balancer (ELB)** for traffic distribution and **Auto-Scaling Groups** for dynamic scaling. **MySQL Master-Slave Replication** improves read performance and fault tolerance, while **MySQL and Tomcat connection pooling** optimizes resource utilization and supports high concurrency. Advanced **full-text search** and **autocomplete functionality** enhance user experience with fast, accurate results.
 
-Security is prioritized through **reCAPTCHA** to prevent automated access, **encrypted password storage** for secure credential management, and **HTTPS** to protect data transmission.
+Optimized **XML parsers** (ActorParser, MovieParser, CastParser) efficiently process large datasets using in-memory caching and auto-ID generation, minimizing database queries and accelerating ingestion. Security is ensured through **reCAPTCHA**, **encrypted password storage**, and **HTTPS** for secure data transmission.
 
-An **Employee Dashboard** delivers robust internal tools via stored procedures, enabling metadata display, star and movie insertion, and restricted-access filtering for authorized personnel. This full-stack application integrates frontend, backend, and database components, creating a secure, efficient, and highly interactive platform for data management and user engagement.
+An **Employee Dashboard** powered by stored procedures provides tools for metadata display, star and movie insertion, and restricted-access filtering for authorized users. This full-stack application integrates frontend, backend, and database components into a secure, scalable, and interactive platform.
 
 ---
 
 # Team Contributions
 ## project 4:
-We collaborated on debug
+We collaborated on Connection Pooling, and debugging.
 
 ### Specific Contributions:
 
-- **Lucas:**
+- **Lucas:** Scaling Fabflix with a cluster of MySQL/Tomcat and Elastic Load Balancer (ELB), MySQL/Tomcat connection pooling, MySQL full-text search index, autocomplete searching
 - **Betty:** JDBC Connection Pooling, setting up MySQL Master-Slave Replication
 
 - # Connection Pooling
