@@ -125,7 +125,7 @@ We collaborated on designing the software architecture.
 ### Specific Contributions:
 
 - **Lucas:** Implement the **Search and Browse** feature on the Main Page, allowing users to Navigate seamlessly between Genres and Characters, Filter results using both search and browse options, with **Dynamic content updates** as filters are applied, giving users immediate feedback.
-- **Betty:** Implement the Shopping Cart, Login Page.
+- **Betty:** Implement Dynamic Shopping Cart, Checkout function, Order confirmation, and Login Page.
 
 ## project 1:
 We collaborated on setting up the environment (Tasks 1-5).
