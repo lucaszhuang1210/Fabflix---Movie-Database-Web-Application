@@ -7,9 +7,7 @@ FROM maven:3.8.5-openjdk-11-slim AS builder
 WORKDIR /app
 
 # copy everything in the current folder into the "app" folder. (src/ WebContent/ etc)
-COPY . .
-
-WORKDIR /api
+COPY api/ .
 
 # compile the application inside the "app" folder to generate the war file
 RUN mvn clean package
