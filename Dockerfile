@@ -7,7 +7,9 @@ FROM maven:3.8.5-openjdk-11-slim AS builder
 WORKDIR /app
 
 # copy everything in the current folder into the "app" folder. (src/ WebContent/ etc)
-COPY api/ .
+COPY . .
+
+WORKDIR /app/api
 
 # compile the application inside the "app" folder to generate the war file
 RUN mvn clean package
@@ -19,7 +21,7 @@ FROM tomcat:10-jdk11
 WORKDIR /app
 
 # copy the war file what we have generated earlier into the tomcat webapps folder inside the container
-COPY --from=builder /app/target/api.war /var/lib/tomcat10/webapps/api.war
+COPY --from=builder /app/api/target/api.war /usr/local/tomcat/webapps/api.war
 
 # open the 8080 port of the container, so that outside requests can reach the tomcat server
 EXPOSE 8080
