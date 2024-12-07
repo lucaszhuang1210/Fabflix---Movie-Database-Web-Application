@@ -31,7 +31,7 @@ mysql -u mytestuser -p
    ```
    Option 2 (via terminal):  
    ```
-   mysql -u mytestuser -p –database=moviedb –force < movie-data.sql
+   mysql -u mytestuser -p –database=moviedb –-force < movie-data.sql
    ```
 
 4. **Compile Stored Procedure:**  
