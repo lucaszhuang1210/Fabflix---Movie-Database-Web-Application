@@ -1,8 +1,12 @@
-# Team **MicroHard**
+# Team **MicroHard** Local-Branch
 
-## Developed by:
-- Lucas (Kaixiang) Zhuang, Student ID: 73969468
-- Betty (Jiatong) Liu, Student ID: 51549174
+In `local-branch`, the database URL is set to connect to a **local MySQL database** running on `localhost`. This configuration allows the application to run in a local development environment.
+
+The main difference between `local-branch` and `main` is the database connection configuration in the file: `/api/WebContent/META-INF/context.xml`
+
+```
+url="jdbc:mysql://localhost:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false"
+```
 
 ---
 
