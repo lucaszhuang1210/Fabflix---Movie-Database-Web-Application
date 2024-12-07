@@ -36,12 +36,13 @@ function submitLoginForm(formSubmitEvent) {
      */
     formSubmitEvent.preventDefault();
 
-    let recaptcha = grecaptcha.getResponse();
+    // let recaptcha = grecaptcha.getResponse();
 
     $.ajax(
         "../api/_dashboard-login", { // Updated this line
             method: "POST",
-            data: login_form.serialize() + "&g-recaptcha-response=" + recaptcha,
+            //data: login_form.serialize() + "&g-recaptcha-response=" + recaptcha,
+            data: login_form.serialize(),
             success: handleLoginResult
         }
     );

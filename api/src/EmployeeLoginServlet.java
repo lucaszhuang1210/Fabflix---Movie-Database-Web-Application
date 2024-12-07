@@ -15,7 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import org.jasypt.util.password.StrongPasswordEncryptor;
+//import org.jasypt.util.password.StrongPasswordEncryptor;
 
 @WebServlet(name = "EmployeeLoginServlet", urlPatterns = "/api/_dashboard-login")
 public class EmployeeLoginServlet extends HttpServlet {
@@ -39,18 +39,18 @@ public class EmployeeLoginServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         JsonObject responseJsonObject = new JsonObject();
 
-        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
-        System.out.println("gRecaptchaResponse=" + gRecaptchaResponse);
-
-        // Verify reCAPTCHA
-        try {
-            RecaptchaVerifyUtils.verify(gRecaptchaResponse);
-        } catch (Exception e) {
-            responseJsonObject.addProperty("status", "fail");
-            responseJsonObject.addProperty("message", "reCAPTCHA VERIFICATION FAILED");
-            out.write(responseJsonObject.toString());
-            return;
-        }
+//        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+//        System.out.println("gRecaptchaResponse=" + gRecaptchaResponse);
+//
+//        // Verify reCAPTCHA
+//        try {
+//            RecaptchaVerifyUtils.verify(gRecaptchaResponse);
+//        } catch (Exception e) {
+//            responseJsonObject.addProperty("status", "fail");
+//            responseJsonObject.addProperty("message", "reCAPTCHA VERIFICATION FAILED");
+//            out.write(responseJsonObject.toString());
+//            return;
+//        }
 
         // Retrieve parameter username and password from url request.
         String employee_username = request.getParameter("username");
@@ -73,10 +73,11 @@ public class EmployeeLoginServlet extends HttpServlet {
             ResultSet rs = statement.executeQuery();
 
             if (rs.next()) {
-                String encryptedPassword = rs.getString("password");
-                System.out.println("encryptedPassword" + encryptedPassword);
-                boolean success = new StrongPasswordEncryptor().checkPassword(employee_password, encryptedPassword);
-                if(success){
+                if(rs.getString("password").equals(employee_password)){
+//                String encryptedPassword = rs.getString("password");
+//                System.out.println("encryptedPassword" + encryptedPassword);
+//                boolean success = new StrongPasswordEncryptor().checkPassword(employee_password, encryptedPassword);
+//                if(success){
                     // set this user into the session
                     request.getSession().setAttribute("employee", new Employee(employee_username));
                     responseJsonObject.addProperty("status", "success");
