@@ -16,6 +16,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @WebServlet(name = "PaymentServlet", urlPatterns = "/api/payment")
@@ -46,6 +48,8 @@ public class PaymentServlet extends HttpServlet {
             }
         }
 
+        List<Integer> saleIds = new ArrayList<>(); // List to store generated sale IDs
+
         try (Connection conn = dataSource.getConnection()) {
             System.out.println("before sql");
             JsonObject requestData = new com.google.gson.JsonParser().parse(jsonBody.toString()).getAsJsonObject();
@@ -66,13 +70,11 @@ public class PaymentServlet extends HttpServlet {
             statement.setString(2, lastName);
             statement.setString(3, cardNumber);
             statement.setString(4, expirationDate);
-            System.out.println("before executeQuery");
             ResultSet rs = statement.executeQuery();
-            System.out.println("after executeQuery");
             JsonObject responseObject = new JsonObject();
 
-            System.out.println("rs.next()");
             if (rs.next()) {
+                System.out.println("rs.next()");
                 // Credit card is valid; retrieve the customer ID
                 int customerId = rs.getInt("id");
 
@@ -81,26 +83,38 @@ public class PaymentServlet extends HttpServlet {
                 // Insert sale for each movie in the cart
                 System.out.println("customerId," + customerId);
 
-                String saleQuery = "INSERT INTO sales (customerId, movieId, quantity, saleDate) VALUES (?, ?, new Date().getTime(), ?))";
+                String saleQuery = "INSERT INTO sales (customerId, movieId, quantity, saleDate) VALUES (?, ?, ?, CURRENT_DATE)";
                 PreparedStatement saleStatement = conn.prepareStatement(saleQuery, Statement.RETURN_GENERATED_KEYS);
 
                 System.out.println("finish saleqiery");
 
-
                 for (String movieId : cartItems.keySet()) {
-                    System.out.println("enter for loop movieid"+ movieId);
                     JsonObject item = cartItems.getAsJsonObject(movieId);
+
+                    System.out.println("enter for loop movieid: "+ movieId);
+
                     int quantity = item.get("quantity").getAsInt();
-                    System.out.println("quantity"+ quantity);
+                    System.out.println("quantity："+ quantity);
 
                     saleStatement.setInt(1, customerId);
                     saleStatement.setString(2, movieId);
-                    saleStatement.setInt(4, quantity);
+                    saleStatement.setInt(3, quantity);
                     saleStatement.executeUpdate();
+
+                    ResultSet generatedKeys = saleStatement.getGeneratedKeys();
+                    if (generatedKeys.next()) {
+                        int saleId = generatedKeys.getInt(1);
+                        saleIds.add(saleId);  // Store the generated ID
+                    }
+
                 }
 
                 conn.commit();
                 responseObject.addProperty("status", "success");
+                System.out.println("sales id："+ saleIds);
+                responseObject.add("saleIds", gson.toJsonTree(saleIds)); // Adding sale IDs to response
+                System.out.println("saleIds gson："+ gson.toJsonTree(saleIds));
+
                 response.setStatus(200);
             } else {
                 responseObject.addProperty("status", "error");

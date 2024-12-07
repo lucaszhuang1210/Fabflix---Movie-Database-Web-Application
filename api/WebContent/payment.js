@@ -31,12 +31,19 @@ $(document).ready(function() {
             data: JSON.stringify(paymentData),
             contentType: "application/json",
             success: function(response) {
+                console.log("Full response received:", response);
+                console.log("Sale IDs received:", response.saleIds);
                 if (response.status === "success") {
-                    console.log(shoppingCart);
+                    // alert("Transaction Successful!");
+                    // console.log(shoppingCart);
+                    // window.location.href = "confirmation.html";
                     alert("Transaction Successful!");
-                    console.log(shoppingCart);
+                    localStorage.setItem('saleIds', JSON.stringify(response.saleIds));
+                    console.log("Sale IDs received:", response.saleIds);
+                    console.log("Shoping chart", shoppingCart);
+                    console.log("Shoping chart", localStorage);
                     window.location.href = "confirmation.html";
-                    //localStorage.removeItem('shoppingCart');
+
                 } else {
                     alert("Payment failed: " + response.message);
                 }

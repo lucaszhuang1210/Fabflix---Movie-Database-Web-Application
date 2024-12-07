@@ -178,7 +178,14 @@
 
   <!-- Order Details -->
   <div class="order-details">
+
     <div class="order-summary">
+      <!-- Sale IDs Display -->
+      <div>
+        <h4>Sale IDs</h4>
+        <p id="sale-ids-display">Loading sale IDs...</p>
+      </div>
+      <!-- Order Details -->
       <h4>Order Details</h4>
       <table class="table">
         <thead>
@@ -214,6 +221,7 @@
   $(document).ready(function() {
     // Retrieve the shopping cart from localStorage
     const shoppingCart = JSON.parse(localStorage.getItem('shoppingCart')) || {};
+    const saleIds= JSON.parse(localStorage.getItem('saleIds')) || {};
     let totalPrice = 0;
 
     // Populate the movies list
@@ -237,9 +245,11 @@
 
     // Display the total price
     $('#total-price').text(totalPrice.toFixed(2));
-
-    // Optional: Clear the shopping cart after purchase
     localStorage.removeItem('shoppingCart');
+
+    // Display the sale IDs
+    $('#sale-ids-display').text(saleIds.join(", "));
+    localStorage.removeItem('saleIds');
   });
 </script>
 </body>
