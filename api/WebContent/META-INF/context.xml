@@ -11,6 +11,7 @@
               type="javax.sql.DataSource"
               username="mytestuser"
               password="My6$Password"
+              url="jdbc:mysql://localhost:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false"/>
               url="jdbc:mysql://mysql-primary:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false"/>
     url="jdbc:mysql://localhost:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false"/>
 
@@ -22,6 +23,7 @@
               type="javax.sql.DataSource"
               username="mytestuser"
               password="My6$Password"
+              url="jdbc:mysql://localhost:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false"/>
               url="jdbc:mysql://mysql-secondary:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false"/>
     url="jdbc:mysql://localhost:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false"/>
 </Context>
