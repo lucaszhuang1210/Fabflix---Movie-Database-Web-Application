@@ -24,7 +24,7 @@ public class TitleAutoComplete extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         try {
-            dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
+            dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/ReadOnly");
         } catch (NamingException e) {
             throw new ServletException("Unable to initialize data source", e);
         }

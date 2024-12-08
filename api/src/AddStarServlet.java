@@ -22,7 +22,7 @@ public class AddStarServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         try {
-            dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/moviedb");
+            dataSource = (DataSource) new InitialContext().lookup("java:comp/env/jdbc/ReadWrite");
         } catch (NamingException e) {
             throw new ServletException("Cannot retrieve database connection", e);
         }
