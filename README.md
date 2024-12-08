@@ -24,6 +24,11 @@ An **Employee Dashboard** powered by stored procedures provides tools for metada
 ---
 
 # Team Contributions
+
+## project 5:
+- **Betty:**  Set up a Kubernetes (K8s) cluster on AWS, Deploy Fabflix to a Kubernetes (K8s) cluster on AWS with ‘moviedb.yaml’ and 'ingress.yaml', 'context.xml'.
+- **Lucas:**
+
 ## project 4:
 We collaborated on Connection Pooling, and debugging.
 
