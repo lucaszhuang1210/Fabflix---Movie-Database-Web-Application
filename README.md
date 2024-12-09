@@ -26,8 +26,22 @@ An **Employee Dashboard** powered by stored procedures provides tools for metada
 # Team Contributions
 
 ## project 5:
-- **Betty:**  Set up a Kubernetes (K8s) cluster on AWS, Deploy Fabflix to a Kubernetes (K8s) cluster on AWS with ‘moviedb.yaml’ and 'ingress.yaml', 'context.xml'.
-- **Lucas:**
+We collaborated on configuring context.xml, debugging.
+
+### Specific Contributions:
+
+- **Betty:**  Set up a Kubernetes (K8s) cluster on AWS, Deploy Fabflix to a Kubernetes (K8s) cluster on AWS with `moviedb.yaml` and `ingress.yaml`, `context.xml`.
+- **Lucas:** Built and ran the Fabflix application in a Docker container, wrote and managed a `Dockerfile`, configured and executed performance testing for the Fabflix search feature using JMeter with a custom `JMX` file, and analyzed results using the Graph Results Listener.
+
+## **Performance Testing Results**
+
+### **Throughput Numbers**
+| Configuration             | Throughput (req/min) |
+|---------------------------|----------------------|
+| 3 Worker Nodes, 2 Fabflix Pods | 10,500.853 req/min     |
+| 4 Worker Nodes, 3 Fabflix Pods | 6,671.00 req/min     |
+
+---
 
 ## project 4:
 We collaborated on Connection Pooling, and debugging.
