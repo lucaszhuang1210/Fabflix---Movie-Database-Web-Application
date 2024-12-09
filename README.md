@@ -11,11 +11,13 @@
 
 ---
 
-## Project Overview
+# Fabflix Web Application Overview
 
 This project is a **scalable web-based application** deployed on **AWS**, designed for secure, high-performance data processing and seamless user engagement. It is developed in **Java** for backend logic and **JavaScript** for dynamic frontend functionality, hosted on an **Apache Tomcat** server. **Maven** manages dependencies, while a **MySQL database** provides reliable structured data storage.
 
 To ensure scalability and high availability, the application leverages **AWS Cloud Services**, including an **Elastic Load Balancer (ELB)** for traffic distribution and **Auto-Scaling Groups** for dynamic scaling. **MySQL Master-Slave Replication** improves read performance and fault tolerance, while **MySQL and Tomcat connection pooling** optimizes resource utilization and supports high concurrency. Advanced **full-text search** and **autocomplete functionality** enhance user experience with fast, accurate results.
+
+The application is containerized with **Docker**, enabling portability and consistent deployment. It is further deployed to a **Kubernetes cluster(K8s)**, managed with **moviedb.yaml**, **ingress.yaml**, and **context.xml**, ensuring seamless orchestration of resources and high availability. Performance testing was conducted using **JMeter** to evaluate the scalability of the search feature under various load configurations, with throughput peaking at **11,137.428 requests per minute**.
 
 Optimized **XML parsers** (ActorParser, MovieParser, CastParser) efficiently process large datasets using in-memory caching and auto-ID generation, minimizing database queries and accelerating ingestion. Security is ensured through **reCAPTCHA**, **encrypted password storage**, and **HTTPS** for secure data transmission.
 
