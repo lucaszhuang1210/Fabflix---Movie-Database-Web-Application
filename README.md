@@ -35,11 +35,18 @@ We collaborated on configuring context.xml, debugging.
 
 ## **Performance Testing Results**
 
+### **Cluster Configurations**
+Both configurations share:
+
+**1 Control Plane Node** + **1 Master MySQL Pod** + **1 Slave MySQL Pod**
+ 
 ### **Throughput Numbers**
 | Configuration             | Throughput (req/min) |
 |---------------------------|----------------------|
 | 3 Worker Nodes, 2 Fabflix Pods | 10,500.853 req/min     |
-| 4 Worker Nodes, 3 Fabflix Pods | 6,671.00 req/min     |
+| 4 Worker Nodes, 3 Fabflix Pods | 11,137.428 req/min     |
+
+<img width="1171" alt="Screenshot 2024-12-08 at 18 01 11" src="https://github.com/user-attachments/assets/87f1877b-af93-48e7-ac11-67fda81016d8">
 
 ---
 
