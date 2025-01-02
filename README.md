@@ -7,7 +7,7 @@
 ---
 
 ## Video Explanation
-[Watch the video on YouTube](https://www.youtube.com/@lucaszhuang1478)  
+[Watch my videos on YouTube](https://www.youtube.com/@lucaszhuang1478)  
 
 ---
 
@@ -32,8 +32,13 @@ We collaborated on configuring context.xml, debugging.
 
 ### Specific Contributions:
 
-- **Betty:**  Set up a Kubernetes (K8s) cluster on AWS, Deploy Fabflix to a Kubernetes (K8s) cluster on AWS with `moviedb.yaml` and `ingress.yaml`, `context.xml`.
 - **Lucas:** Built and ran the Fabflix application in a Docker container, wrote and managed a `Dockerfile`, configured and executed performance testing for the Fabflix search feature using JMeter with a custom `JMX` file, and analyzed results using the Graph Results Listener.
+- **Betty:**  Set up a Kubernetes (K8s) cluster on AWS, Deploy Fabflix to a Kubernetes (K8s) cluster on AWS with `moviedb.yaml` and `ingress.yaml`, `context.xml`.
+
+### To Run JMeter on Fabflix:
+```
+./bin/jmeter -n -t fabflix_test.jmx
+```
 
 ## **Performance Testing Results**
 
