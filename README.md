@@ -1,45 +1,8 @@
-# Team **MicroHard** Dockerized-Branch
+# Team **MicroHard**
 
-This branch is a **Dockerized branch**, designed to run the application in a Docker container. It requires a **database with no password encryption** for compatibility in the Dockerized environment.
-
-The main differences between the **Dockerized-branch** and **local-branch** are:
-1. **No reCAPTCHA**: The reCAPTCHA feature has been removed.
-2. **No Password Encryption Filter**: Password encryption is not used in this branch.
-3. **No HTTPS Requirement**: The application does not enforce HTTPS in this branch.
-
-The database connection configuration in the file `/api/WebContent/META-INF/context.xml` is as follows:
-
-```
-url="jdbc:mysql://host.docker.internal:3306/moviedb?autoReconnect=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false"
-```
-
----
-
-## Docker Commands for the Dockerized Branch
-
-### Build the Docker Image
-```
-sudo docker build . --platform linux/amd64 -t lucaszhuang1210/fabflix:v2
-```
-
-### Push the Docker Image to a Repository
-```
-sudo docker push lucaszhuang1210/fabflix:v2
-```
-
-### Pull the Docker Image from the Repository
-```
-sudo docker pull lucaszhuang1210/fabflix:v2
-```
-
-### Run the Docker Container
-```
-sudo docker run --add-host host.docker.internal:host-gateway -p 8080:8080 lucaszhuang1210/fabflix:v2
-```
-
----
-
-By following these steps, the Dockerized branch can be built, pushed, pulled, and run in a Dockerized environment seamlessly.
+## Developed by:
+- Lucas (Kaixiang) Zhuang, Student ID: 73969468
+- Betty (Jiatong) Liu, Student ID: 51549174
 
 ---
 
