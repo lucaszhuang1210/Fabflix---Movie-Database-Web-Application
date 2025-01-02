@@ -1,8 +1,8 @@
 # Team **MicroHard**
 
 ## Developed by:
-- Lucas (Kaixiang) Zhuang, Student ID: 73969468
-- Betty (Jiatong) Liu, Student ID: 51549174
+- Lucas (Kaixiang) Zhuang
+- Betty (Jiatong) Liu
 
 ---
 
@@ -25,12 +25,9 @@ An **Employee Dashboard** powered by stored procedures provides tools for metada
 
 ---
 
-# Team Contributions
+# Project Milestones
 
-## project 5:
-We collaborated on configuring context.xml, debugging.
-
-### Specific Contributions:
+## Project 5:
 
 - **Lucas:** Built and ran the Fabflix application in a Docker container, wrote and managed a `Dockerfile`, configured and executed performance testing for the Fabflix search feature using JMeter with a custom `JMX` file, and analyzed results using the Graph Results Listener.
 - **Betty:**  Set up a Kubernetes (K8s) cluster on AWS, Deploy Fabflix to a Kubernetes (K8s) cluster on AWS with `moviedb.yaml` and `ingress.yaml`, `context.xml`.
@@ -57,89 +54,44 @@ Both configurations share:
 
 ---
 
-## project 4:
-We collaborated on Connection Pooling, and debugging.
-
-### Specific Contributions:
+## Project 4:
 
 - **Lucas:** Scaling Fabflix with a cluster of MySQL/Tomcat and Elastic Load Balancer (ELB), MySQL/Tomcat connection pooling, MySQL full-text search index, autocomplete searching
 - **Betty:** JDBC Connection Pooling, setting up MySQL Master-Slave Replication
 
-- # Connection Pooling
-    - #### Include the filename/path of all code/configuration files in GitHub of using JDBC Connection Pooling.
-    Servlets:
-    All servlets are located in /api/src/ directory:
+### Connection Pooling
 
-    - ActorParser.java
-    - CastParser.java
-    - MovieParser.java
-    - AddMovieServlet.java
-    - AddStarServlet.java
-    - EmployeeLoginServlet.java
-    - GenreServlet.java
-    - LoginServlet.java
-    - MetadataServlet.java
-    - MovieListServlet.java
-    - PaymentServlet.java
-    - SingleMovieServlet.java
-    - SingleStarServlet.java
-    - TitleAutoComplete.java
+#### Servlets
+All servlets using JDBC Connection Pooling are located in the `/api/src/` directory:
+
+- **Admin Servlets**:
+  - `EmployeeLoginServlet.java`, `AddMovieServlet.java`, `AddStarServlet.java`
+
+- **Core Feature Servlets**:
+  - `MovieListServlet.java`, `SingleMovieServlet.java`, `SingleStarServlet.java`
+  - `LoginServlet.java`, `PaymentServlet.java`, `MetadataServlet.java`
+  - `GenreServlet.java`, `TitleAutoComplete.java`
   
-    Parsers:
-    Located in /api/src/XMLParser/:
+- **Parser Servlets**:
+  - `ActorParser.java`, `CastParser.java`, `MovieParser.java`, `ParseXMLFileAndInsertToDatabase.java`
   
-    - ParseXMLFileAndInsertToDatabase.java
-  
-    - #### Explain how Connection Pooling is utilized in the Fabflix code.
-In Fabflix, connection pooling is leveraged to optimize database access efficiency and scalability. When a servlet or any Java class responsible for database operations is invoked, it does not create a new database connection outright. Instead, it requests a connection from the pool, which is an instance of javax.sql.DataSource managed by Tomcat's connection pool. This pool is defined in the context.xml file with parameters like maxTotal, maxIdle, maxWaitMillis, ensuring that the system can handle multiple simultaneous database requests without latency or overhead of establishing new connections. The servlet uses this connection to execute SQL commands and then returns it to the pool when the operations are complete, thus making it available for subsequent requests.
-  
-    - #### Explain how Connection Pooling works with two backend SQL.
-Connection pooling with two backend SQL servers, typically a master and a slave in a database architecture, involves managing a group of database connections that can be reused for multiple requests. This strategy is vital for enhancing performance and resource management across both servers. In this setup, the connection pool is divided between the master and slave databases, aligning with their operational roles—write operations are directed to the master, and read operations are predominantly handled by the slave.
+### How is Connection Pooling utilized in Fabflix:
+In Fabflix, connection pooling is leveraged to optimize database access efficiency and scalability. When a servlet or any Java class responsible for database operations is invoked, it does not create a new database connection outright. Instead, it requests a connection from the pool, which is an instance of `javax.sql.DataSource` managed by Tomcat's connection pool. This pool is defined in the context.xml file with parameters like `maxTotal`, `maxIdle`, `maxWaitMillis`, ensuring that the system can handle multiple simultaneous database requests without latency or overhead of establishing new connections. The servlet uses this connection to execute SQL commands and then returns it to the pool when the operations are complete, thus making it available for subsequent requests.
 
-When a web application integrates connection pooling in such a dual-backend environment, it maintains two pools of connections. Each pool targets one of the SQL servers. The master database connection pool manages connections that are used for executing write operations such as INSERT, UPDATE, and DELETE. This ensures that all data modifications are centralized through the master server to maintain consistency and data integrity, which are then replicated to the slave server. Conversely, the connection pool for the slave database is used primarily for handling read operations like SELECT queries. This distribution allows the application to offload a significant portion of the data retrieval tasks to the slave server, thereby reducing the load on the master and improving read performance. By using a connection pool for the slave, the system can handle multiple concurrent read requests efficiently, leveraging the replicated data without impacting the performance of the master server.
+- **Master Server:** Handles all write operations, including `INSERT`, `UPDATE`, and `DELETE` with a dedicated connection pool to centralize data modifications, ensuring consistency and integrity. Changes made on the master are replicated to the slave server.
+- **Slave Server:** Optimized for handling read operations such as `SELECT` queries, handling high-volume queries and reducing load on the master.
 
-The management of these pools involves keeping a certain number of connections open and ready for use in both pools, reducing the overhead and latency associated with establishing new connections. The application server or the middleware managing the pools ensures that connections are efficiently recycled and provided to user requests as needed. This mechanism supports high availability and scalability by optimizing the usage of database resources, balancing loads between the servers, and ensuring rapid response times for both read and write operations within the application.
-
-- # Master/Slave
-    - #### Include the filename/path of all code/configuration files in GitHub of routing queries to Master/Slave SQL.
-    Servlets:
-    All servlets are located in /api/src/ directory:
-
-    - ActorParser.java
-    - CastParser.java
-    - MovieParser.java
-    - AddMovieServlet.java
-    - AddStarServlet.java
-    - EmployeeLoginServlet.java
-    - GenreServlet.java
-    - LoginServlet.java
-    - MetadataServlet.java
-    - MovieListServlet.java
-    - PaymentServlet.java
-    - SingleMovieServlet.java
-    - SingleStarServlet.java
-    - TitleAutoComplete.java
-  
-    - #### How read/write requests were routed to Master/Slave SQL?
-In a master/slave SQL database setup, effectively routing read and write requests is essential for maintaining system performance and data integrity. This setup dictates that all write operations, such as INSERT, UPDATE, and DELETE commands, are directed exclusively to the master server. This centralization ensures that any modifications to the data are governed by a single authoritative source, thereby maintaining consistency and integrity across the database system. These changes are then replicated from the master to the slave servers, ensuring that all nodes in the system remain synchronized.
-
-For read operations, which generally involve SELECT queries, the requests are routed to one or more slave servers. This distribution strategy helps to balance the load across the system, allowing the master server to focus on handling the more resource-intensive write operations. Employing slave servers for read operations optimizes the overall read performance and significantly reduces the operational burden on the master server. The technical implementation of this routing mechanism typically involves configuring the application’s data access layer. This layer is designed to distinguish between read and write operations and direct them appropriately to the master or slave servers. Advanced setups might utilize load balancers or dedicated routing software that dynamically directs read queries to the least loaded or most geographically appropriate slave server, further enhancing performance and reducing latency.
-
-Moreover, connection pooling is implemented for both master and slave databases to improve efficiency. Connection pools manage a set of open database connections that can be reused for multiple requests, which eliminates the overhead associated with establishing new connections. This is particularly beneficial in high-load environments where the frequency of database operations is high. Implementing such a routing mechanism requires careful planning and configuration to ensure that it not only improves performance but also adheres to data consistency requirements.
-  
-## project 3:
-We collaborated on debugging and use PreparedStatement.
-### Specific Contributions:
+This setup improves scalability, availability, and resource management, ensuring the system performs well under heavy usage. Connection pooling reduces the overhead of opening and closing database connections, ensuring quicker response times. It also balances the workload, as the slave server offloads most read tasks, while the master focuses on writes. 
+ 
+## Project 3:
 
 - **Lucas:** Developed and optimized XML parsers (`ActorParser`, `MovieParser`, `CastParser`, `ParseXMLFileAndInsertToDatabase`) with in-memory caching and ID generation, documented an optimization report, and deployed the application on AWS with HTTPS.
-- **Betty:** Adding reCAPTCHA, Use Encrypted Password, an Employee Dashboard using Stored Procedure with function：
-           1. Metadata display
-           2. Insert a star (Starname, DOB)
-           3. Inserting a movie. （Moviename， director name, year, star name, star DOB)
+- **Betty:** Adding reCAPTCHA, Use Encrypted Password, an Employee Dashboard using Stored Procedure.
 
-[Inconsistency Data Report](https://github.com/uci-jherold2-fall24-cs122b/2024-fall-cs-122b-microhard/blob/main/inconsistency_entries.txt) 
-  
-## List filenames with Prepared Statements
+### Inconsistency Data Report
+The [Inconsistency Data Report](https://github.com/lucaszhuang1210/Fabflix---Movie-Database-Web-Application/blob/main/inconsistency_entries.txt) captures data entries from the Stanford Movies dataset that did not meet the required criteria for inclusion in the database. These inconsistencies include missing critical fields or invalid entries that could compromise data integrity. Examples include Incomplete movie entries (e.g., missing title or ID), duplicate actor records, etc. View the dataset in `data-files` branch: [stanford-movies](https://github.com/lucaszhuang1210/Fabflix---Movie-Database-Web-Application/tree/data-files/stanford-movies).
+
+## Files with Prepared Statements Updated
 - ActorParser.java
 - CastParser.java
 - MovieParser.java
@@ -154,16 +106,12 @@ We collaborated on debugging and use PreparedStatement.
 - SingleMovieServlet.java
 - SingleStarServlet.java
 
-## project 2:
-We collaborated on designing the software architecture.
-### Specific Contributions:
+## Project 2:
 
 - **Lucas:** Implement the **Search and Browse** feature on the Main Page, allowing users to Navigate seamlessly between Genres and Characters, Filter results using both search and browse options, with **Dynamic content updates** as filters are applied, giving users immediate feedback.
 - **Betty:** Implement Dynamic Shopping Cart, Checkout function, Order confirmation, and Login Page.
 
 ## project 1:
-We collaborated on setting up the environment (Tasks 1-5).
-### Specific Contributions:
 
 - **Lucas:** Debugged and updated the Single Movie page, wrote the `README.md`, created the `moviedb` database, set up AWS, and recorded video demonstrations.
 - **Betty:** Implement Movie List Page (`MovieListServlet`, `index.html`, and `index.js`), Single Stars Page (`SingleStarServlet`, `single-star.html`, and `single-star.js`), Single Movie (`SingleMovieServlet`, `single-movie.html`, and `single-movie.js`) Page, created the `style.css`, fixed Maven packages setup, and assisted with AWS instance setup.
